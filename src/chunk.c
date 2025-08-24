@@ -1,6 +1,7 @@
 #include "chunk.h"
 #include "memory.h"
 #include "vm.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 
@@ -38,7 +39,7 @@ int writeConstant(Chunk* chunk, Value value, int line){
         //     writeChunk(chunk, (uint8_t)((constantIndex >> (2-i)*8) & 0xff), line);
         // }
         //TODO: ADD CONSTANT_LONG
-        printf("\n\n\n\nHELPPPPPPPPP\n\n\n\n")
+        printf("\n\n\n\nHELPPPPPPPPP\n\n\n\n");
     }
     return (int)chunk->constants.count - 1;
 }
