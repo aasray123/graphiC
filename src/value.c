@@ -43,7 +43,7 @@ bool valuesEqual(Value a, Value b) {
 
     switch (a.type) {
         case VAL_BOOL: return BOOL_VALUE_TO_C(a) == BOOL_VALUE_TO_C(b);
-        case VAL_NIL: return true; // Both are nil
+        case VAL_NULL: return true; // Both are null
         case VAL_NUMBER: return NUMBER_VALUE_TO_C(a) == NUMBER_VALUE_TO_C(b);
         case VAL_OBJ: return OBJ_VALUE_TO_C(a) == OBJ_VALUE_TO_C(b);
         default: return false; // Unreachable, but keeps the compiler happy.
