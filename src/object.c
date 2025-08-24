@@ -50,27 +50,28 @@ ObjNative* newNative(NativeFn function) {
     return native;
 }
 
-// static uint32_t hashString(const char* key, int length){
-//     uint32_t hash = 2166136261u;
+static uint32_t hashString(const char* key, int length){
+    uint32_t hash = 2166136261u;
 
-//     for(int i = 0; i < length; i++){
-//         hash ^= key[i];
-//         hash *= 16777619;
-//     }
+    for(int i = 0; i < length; i++){
+        hash ^= key[i];
+        hash *= 16777619;
+    }
 
-//     return hash;
-// }
-// ObjString* takeString(char* chars, int length){
-//     uint32_t hash = hashString(chars, length);
+    return hash;
+}
 
-//     ObjString* interned = tableFindString(&vm.strings, chars, length, hash);
-//     if(interned != NULL) {
-//         FREE_ARRAY(char, chars, length + 1);
-//         return interned;
-//     }
+ObjString* takeString(char* chars, int length){
+    uint32_t hash = hashString(chars, length);
 
-//     return allocateString(chars, length, hash);
-// }
+    ObjString* interned = tableFindString(&vm.strings, chars, length, hash);
+    if(interned != NULL) {
+        FREE_ARRAY(char, chars, length + 1);
+        return interned;
+    }
+
+    return allocateString(chars, length, hash);
+}
 
 ObjString* copyString(const char* chars, int length){
     uint32_t hash = hashString(chars, length);
