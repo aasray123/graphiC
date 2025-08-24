@@ -98,6 +98,7 @@ static void expression();
 static ParseRule* getRule(TokenType type);
 static uint8_t makeConstant(Value value);
 static void emitByte(uint8_t byte);
+static void emitReturn();
 
 /*
 ---------------------------------------------------------------------------
@@ -127,6 +128,53 @@ static void endScope() {
         current->localCount--;
     }
 }
+
+/*
+---------------------------------------------------------------------------
+-------------------------------COMPILER SETUP------------------------------
+---------------------------------------------------------------------------
+*/
+
+static void initCompiler(Compiler* compiler, FunctionType type) {
+    compiler->enclosing = current;
+    compiler->function = NULL;
+    compiler->type = type;
+    compiler->localCount = 0;
+    compiler->scopeDepth = 0;
+    compiler->function = newFunction();
+    current = compiler;
+
+    if(type != TYPE_SCRIPT || type != TYPE_SETUP){
+        current->function->name = copyString(parser.previous.start, parser.previous.length);
+    }
+
+    Local* local = &current->locals[current->localCount++];
+    local->depth = 0;
+    local->isCaptured = false;
+
+    if (type != TYPE_FUNCTION) {
+        local->name.start = "this";
+        local->name.length = 4;
+    } else {
+        local->name.start = "";
+        local->name.length = 0;
+    }
+}
+
+static ObjFunction* endCompiler(){
+    emitReturn();
+    ObjFunction* function = current->function; 
+
+    #ifdef DEBUG_PRINT_CODE
+        if (!parser.hadError) {
+            disassembleChunk(currentChunk(), function->name != NULL ? 
+                                        function->name->chars : "<script>");
+        }
+    #endif
+    current = current->enclosing;
+    return function;
+}
+
 
 /*
 ------------------------------------------------------------------------
@@ -253,6 +301,18 @@ static void emitConstant(Value value){
     emitBytes(OP_CONSTANT, makeConstant(value));
 }
 
+static void patchJump(int offset) {
+    // -2 to adjust for the bytecode for the jump offset itself.
+    int jump = currentChunk()->count - offset - 2;
+
+    if (jump > UINT16_MAX) {
+        error("Too much code to jump over.");
+    }
+
+    currentChunk()->code[offset] = (jump >> 8) & 0xff;
+    currentChunk()->code[offset + 1] = jump & 0xff;
+}
+
 /*
 ---------------------------------------------------------------------------
 -------------------------CONSTANT HELPER FUNCTIONS-------------------------
@@ -273,6 +333,29 @@ static uint8_t makeConstant(Value value){
 -------------------------PARSE RULE FUNCTIONS------------------------------
 ---------------------------------------------------------------------------
 */
+
+static void parsePrecedence(Precedence precedence){
+    advance();
+    ParseFn prefixRule = getRule(parser.previous.type)->prefix;
+    if(prefixRule == NULL){
+        error("Expect expression.");
+        return;
+    }
+
+    bool canAssign = precedence <= PREC_ASSIGNMENT;
+    prefixRule(canAssign);
+
+    while (precedence <= getRule(parser.current.type)->precedence){
+        advance();
+        ParseFn infixRule = getRule(parser.previous.type)->infix;
+        infixRule(canAssign);
+    }
+
+    if(canAssign && match(TOKEN_EQUAL)){
+        error("Invalid assignment target.");
+    }
+}
+
 static void dot(bool canAssign) {
     consume(TOKEN_IDENTIFIER, "Expect property name after '.'");
     uint8_t name = identifierConstant(&parser.previous);
@@ -310,6 +393,7 @@ static void binary(bool canAssign) {
     ParseRule* rule = getRule(operatorType);
     parsePrecedence((Precedence)(rule->precedence + 1));
 
+    //TODO: STAR EQUAL AND STUFF LIKE TAHT
     switch(operatorType) {
         case TOKEN_NOT_EQUAL:  emitBytes(OP_EQUAL, OP_NOT); break;
         case TOKEN_EQUAL_EQUAL: emitByte(OP_EQUAL); break;
@@ -403,7 +487,7 @@ ParseRule rules[] = {
   [TOKEN_PLUS_EQUAL]    = {NULL,     binary,  PREC_ASSIGNMENT},
   [TOKEN_MINUS_EQUAL]   = {NULL,     binary,  PREC_ASSIGNMENT},
   [TOKEN_SLASH_EQUAL]   = {NULL,     binary,  PREC_ASSIGNMENT},
-  [TOKEN_START_EQUAL]   = {NULL,     binary,  PREC_ASSIGNMENT},
+  [TOKEN_STAR_EQUAL]   = {NULL,      binary,  PREC_ASSIGNMENT},
   [TOKEN_SEMICOLON]     = {NULL,     NULL,    PREC_NONE},
   [TOKEN_COMMA]         = {NULL,     NULL,    PREC_NONE},
   [TOKEN_DOT]           = {NULL,     dot,     PREC_CALL},
@@ -817,7 +901,7 @@ static uint8_t parseVariable(const char* errorMessage) {
     }
 
     // This case is for true top-level globals, which we will forbid.
-    errorAtCurrent("Cannot declare global variable at top level.");
+    error("Cannot declare global variable at top level.");
 }
 
 static void varDeclaration() {

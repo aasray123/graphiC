@@ -27,6 +27,21 @@ int addConstant(Chunk* chunk, Value value){
     return chunk->constants.count - 1;
 }
 
+void writeChunk(Chunk* chunk, uint8_t byte, int line) {
+  // 1. Check if the array has enough capacity.
+  if (chunk->capacity < chunk->count + 1) {
+    int oldCapacity = chunk->capacity;
+    chunk->capacity = GROW_CAPACITY(oldCapacity);
+    chunk->code = GROW_ARRAY(uint8_t, chunk->code, oldCapacity, chunk->capacity);
+    chunk->lines = GROW_ARRAY(int, chunk->lines, oldCapacity, chunk->capacity);
+  }
+
+  // 2. Add the new byte and line number to the end of the arrays.
+  chunk->code[chunk->count] = byte;
+  chunk->lines[chunk->count] = line;
+  chunk->count++;
+}
+
 int writeConstant(Chunk* chunk, Value value, int line){
     int constantIndex = addConstant(chunk, value);
     if(constantIndex < 256){

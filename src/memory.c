@@ -1,15 +1,16 @@
 #include <stdlib.h>
 #include "memory.h"
-// #include "vm.h"
-// #include "compiler.h"
+#include "vm.h"
+#include "compiler.h"
 #include "object.h"
 
 #define GC_HEAP_GROW_FACTOR 2
 
 
 void* reallocate(void* pointer, size_t oldSize, size_t newSize){
-    vm.bytesAllocated += newSize - oldSize;
     //TODO: GC
+    // vm.bytesAllocated += newSize - oldSize;
+
     // if (newSize > oldSize) {
     //     #ifdef DEBUG_STRESS_GC
     //     collectGarbage();
@@ -40,9 +41,10 @@ static void freeObject(Obj* object){
             FREE(ObjFunction, object);
             break;
         }
-        case OBJ_NATIVE: 
+        case OBJ_NATIVE: {
             FREE(ObjNative, object);
             break;
+        }
         case OBJ_STRING: {
             ObjString* string = (ObjString*)object;
             FREE_ARRAY(char, string->chars, string->length + 1);
@@ -60,5 +62,5 @@ void freeObjects() {
         object = next;
     }
 
-    free(vm.grayStack);
+    // free(vm.grayStack);
 }

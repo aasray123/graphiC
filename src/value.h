@@ -3,6 +3,32 @@
 
 #include "common.h"
 
+typedef struct Obj Obj;
+typedef struct ObjString ObjString;
+
+typedef enum {
+    VAL_BOOL,
+    VAL_NULL,
+    VAL_NUMBER,
+    VAL_OBJ,
+} ValueType;
+
+typedef struct Value {
+    ValueType type;
+    union {
+        bool boolean;
+        double number;
+        Obj* obj;
+    } as;
+} Value;
+
+typedef struct 
+{
+    int capacity;
+    int count;
+    Value* values;
+} ValueArray;
+
 //CHECK THE TYPE OF A VALUE
 #define IS_BOOL(value)      ((value).type == VAL_BOOL)
 #define IS_NULL(value)       ((value).type == VAL_NULL)
@@ -20,29 +46,6 @@
 #define C_TO_NUMBER_VALUE(value) ((Value){VAL_NUMBER, {.number = value}})
 #define C_TO_OBJ_VALUE(object)      ((Value){VAL_OBJ, {.obj = (Obj*)object}})
 
-typedef enum {
-    VAL_BOOL,
-    VAL_NULL,
-    VAL_NUMBER,
-    VAL_OBJ,
-} ValueType;
-
-typedef struct 
-{
-    Value type;
-    union {
-        bool boolean;
-        double number;
-        Obj* obj;
-    } as;
-} Value;
-
-typedef struct 
-{
-    int capacity;
-    int count;
-    Value* values;
-} ValueArray;
 
 bool valuesEqual(Value a, Value b);
 void initValueArray(ValueArray* array);

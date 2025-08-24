@@ -4,6 +4,7 @@
 #include "common.h"
 #include "value.h"
 
+//TODO: START EQUAL AND STUFF
 typedef enum {
     OP_RETURN, 
     OP_NEGATE, 
