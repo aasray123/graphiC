@@ -882,6 +882,7 @@ static void namedVariable(Token name, bool canAssign){
     // emitBytes(OP_GET_GLOBAL, arg);
 }
 
+//PREVIOUS VERSION
 static uint8_t parseVariable(const char* errorMessage) {
     consume(TOKEN_IDENTIFIER, errorMessage);
     declareVariable();
@@ -902,7 +903,8 @@ static uint8_t parseVariable(const char* errorMessage) {
 
     // This case is for true top-level globals, which we will forbid.
     error("Cannot declare global variable at top level.");
-}
+} 
+
 
 static void varDeclaration() {
     uint8_t global = parseVariable("Expect variable name.");
