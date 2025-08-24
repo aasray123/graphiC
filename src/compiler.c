@@ -791,24 +791,49 @@ static void markInitialized() {
     current->locals[current->localCount - 1].depth = current->scopeDepth;
 }
 
+// static void defineVariable(uint8_t global) {
+//     // If we are in a local scope, the value is already on the stack.
+//     // We just need to mark it as initialized and ready for use.
+//     if (current->scopeDepth > 0) {
+//         // The exception is the top level of setup(), which defines globals.
+//         if (current->type == TYPE_SETUP && current->scopeDepth == 1) {
+//             emitBytes(OP_DEFINE_GLOBAL, global);
+//             return;
+//         } 
+//         // It's a true local variable.
+//         markInitialized();
+//         return;
+//     }
+
+//     // This is a global variable.
+//     emitBytes(OP_DEFINE_GLOBAL, global);
+//     // errorAtCurrent("Cannot define global variable at top level.");
+// }
+
 static void defineVariable(uint8_t global) {
-    // If we are in a local scope, the value is already on the stack.
-    // We just need to mark it as initialized and ready for use.
-    if (current->scopeDepth > 0) {
-        // The exception is the top level of setup(), which defines globals.
-        if (current->type == TYPE_SETUP && current->scopeDepth == 1) {
-            emitBytes(OP_DEFINE_GLOBAL, global);
-        } else {
-            // It's a true local variable.
-            markInitialized();
-        }
-        return;
+    // Determine if we are defining a global or local variable based on your rules.
+    bool isGlobal = false;
+
+    if (current->scopeDepth == 0) {
+        // Functions declared at the top level are global.
+        // `var` is disallowed at this level by the `declaration()` function,
+        // so we can be sure this is a function.
+        isGlobal = true;
+    } else if (current->type == TYPE_SETUP && current->scopeDepth == 1) {
+        // `var` at the top-level of `setup()` creates a global.
+        isGlobal = true;
     }
+    // In all other cases, it's a local variable (e.g., inside any other function,
+    // or in a nested block inside `setup`).
 
-    // This is a global variable.
-    errorAtCurrent("Cannot define global variable at top level.");
+    if (isGlobal) {
+        emitBytes(OP_DEFINE_GLOBAL, global);
+    } else {
+        // It's a local variable. The value is already on the stack.
+        // We just need to mark it as initialized and ready for use.
+        markInitialized();
+    }
 }
-
 
 static void addLocal(Token name) {
     if(current->localCount == UINT8_COUNT) {
@@ -837,6 +862,7 @@ static int resolveLocal(Compiler* compiler, Token* name) {
 
 static void declareVariable(){
     if(current->scopeDepth == 0) return;
+    if(current->type == TYPE_SETUP && current->scopeDepth == 1) return;
 
     Token* name = &parser.previous;
     for(int i = current->localCount - 1 ; i >= 0; i--) {
@@ -882,29 +908,15 @@ static void namedVariable(Token name, bool canAssign){
     // emitBytes(OP_GET_GLOBAL, arg);
 }
 
-//PREVIOUS VERSION
+
 static uint8_t parseVariable(const char* errorMessage) {
     consume(TOKEN_IDENTIFIER, errorMessage);
+
     declareVariable();
+    if(current->scopeDepth > 0) return 0;
 
-    /*  
-        Locals don't need their name in the constant table because they are
-        accessed by stack slot. Globals are accessed by name.
-        The only time a variable inside a function is a global is at the top
-        level of setup().
-    */
-    if (current->scopeDepth > 0) {
-        if (current->type == TYPE_SETUP && current->scopeDepth == 1) {
-            // This is a global defined in setup().
-            return identifierConstant(&parser.previous);
-        }
-        return 0; // It's a local.
-    }
-
-    // This case is for true top-level globals, which we will forbid.
-    error("Cannot declare global variable at top level.");
-} 
-
+    return identifierConstant(&parser.previous);
+}
 
 static void varDeclaration() {
     uint8_t global = parseVariable("Expect variable name.");
