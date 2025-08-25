@@ -61,6 +61,9 @@ void initVM() {
     vm.initString = NULL;
     vm.initString = copyString("init", 4);
 
+    vm.drawString = NULL;
+    vm.drawString = copyString("draw", 4);
+
     //TODO: NATIVE FUNCTION SETUP
     // defineNative("clock", clockNative);
 }
@@ -265,7 +268,7 @@ static InterpretResult run() {
             }
             case OP_ADD:         {
                 if (IS_STRING(peek(0)) && IS_STRING(peek(1))){
-                    concatenate();
+                    concatenate(); 
                 }
                 else if(IS_NUMBER(peek(0)) && IS_NUMBER(peek(1))){    
                     BINARY_OP(C_TO_NUMBER_VALUE, +);
@@ -352,6 +355,21 @@ InterpretResult interpret(const char* source) {
     call(function, 0);
     // push(C_TO_OBJ_VALUE(closure));
     // callValue(C_TO_OBJ_VALUE(closure), 0);
+    InterpretResult result = run();
+    if(result != INTERPRET_OK) return result;
 
-    return run();
+    Value drawValue;
+    if (tableGet(&vm.globals, vm.drawString, &drawValue)) {
+        while(true) {
+            vm.stackTop = vm.stack;
+            push(drawValue);
+            if(!callValue(drawValue, 0)) {
+                return INTERPRET_RUNTIME_ERROR;
+            }
+
+            result = run();
+            if(result != INTERPRET_OK) return result;
+        }
+    }
+    return INTERPRET_OK;
 }

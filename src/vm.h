@@ -24,6 +24,7 @@ typedef struct {
     Value* stackTop;
     Table strings;
     ObjString* initString;
+    ObjString* drawString;
     Table globals;
 
     //TODO: GC
