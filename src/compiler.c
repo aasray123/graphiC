@@ -64,7 +64,8 @@ typedef enum {
     TYPE_SETUP,
     TYPE_METHOD,
     TYPE_INITIALIZER,
-    TYPE_SCRIPT
+    TYPE_SCRIPT,
+    TYPE_DRAW
 } FunctionType;
 
 typedef struct Compiler {
@@ -256,6 +257,12 @@ static uint8_t identifierConstant(Token* name){
     return makeConstant(C_TO_OBJ_VALUE(copyString(name->start, name->length)));
 }
 
+static Token syntheticToken(const char* text) {
+    Token token;
+    token.start = text;
+    token.length = (int)strlen(text);
+    return token;
+}
 
 /*
 ---------------------------------------------------------------------------
@@ -771,14 +778,18 @@ static void functionDeclaration() {
     markInitialized();
 
     Token* name = &parser.previous;
-    if(name->length == 5 && memcmp(name->start, "setup", 5) == 0) {
-        function(TYPE_SETUP);
-    }
-    else{
-        function(TYPE_FUNCTION);
+    bool isSetup = name->length == 5 && memcmp(name->start, "setup", 5) == 0;
+
+    function(isSetup ? TYPE_SETUP : TYPE_FUNCTION);
+    
+    defineVariable(global);
+
+    if (current->type == TYPE_SCRIPT && isSetup) {
+        emitBytes(OP_GET_GLOBAL, global); // Load the setup function.
+        emitBytes(OP_CALL, 0);             // Call it with 0 arguments.
+        emitByte(OP_POP);                  // Pop its return value.
     }
 
-    defineVariable(global);
 }
 
 /*
