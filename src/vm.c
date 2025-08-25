@@ -112,9 +112,6 @@ static bool call(ObjFunction* function, int argCount) {
 static bool callValue(Value callee, int argCount) {
     if (IS_OBJ(callee)) {
         switch (OBJ_TYPE(callee)) {
-            //TODO: FUNCTION INSTEAD OF CLOSURE
-            // case OBJ_CLOSURE:
-            //     return call(AS_FUNCTION(callee), argCount);
             case OBJ_FUNCTION:
                 return call(AS_FUNCTION(callee), argCount);
             case OBJ_NATIVE:{
@@ -353,8 +350,6 @@ InterpretResult interpret(const char* source) {
     push(C_TO_OBJ_VALUE(function));
     
     call(function, 0);
-    // push(C_TO_OBJ_VALUE(closure));
-    // callValue(C_TO_OBJ_VALUE(closure), 0);
     InterpretResult result = run();
     if(result != INTERPRET_OK) return result;
 

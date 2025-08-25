@@ -198,7 +198,6 @@ Token scanToken() {
                     (match('=') ? TOKEN_SLASH_EQUAL : TOKEN_SLASH));
         case '*': return makeToken(
                     (match('=') ? TOKEN_STAR_EQUAL : TOKEN_STAR));
-        //TODO: CHECK THE || and && work
         case '|': 
             if(match('|')) return makeToken(TOKEN_OR);
             break;

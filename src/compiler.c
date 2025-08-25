@@ -1,13 +1,3 @@
-/*
-++
---
-+=
--=
-*=
-/=
-
-INCLUDE THE ABOVE ONES!!!!!!!!!!!!!
-*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -75,7 +65,6 @@ typedef struct Compiler {
 
     Local locals[UINT8_COUNT];
     int localCount;
-    // Upvalue upvalues[UINT8_COUNT];
     int scopeDepth;
 } Compiler;
 
@@ -119,13 +108,7 @@ static void endScope() {
     current->scopeDepth--;
 
     while (current->localCount > 0 && current->locals[current->localCount - 1].depth > current->scopeDepth) {
-        //TODO:FIX UPVALUE
-        if (current->locals[current->localCount - 1].isCaptured) {
-            // emitByte(OP_CLOSE_UPVALUE);
-        } 
-        else {
-            emitByte(OP_POP);
-        }
+        emitByte(OP_POP);
         current->localCount--;
     }
 }
@@ -145,7 +128,6 @@ static void initCompiler(Compiler* compiler, FunctionType type) {
     compiler->function = newFunction();
     current = compiler;
 
-    //&& type != TYPE_SETUP
     if(type != TYPE_SCRIPT ){
         current->function->name = copyString(parser.previous.start, parser.previous.length);
     }
@@ -401,7 +383,6 @@ static void binary(bool canAssign) {
     ParseRule* rule = getRule(operatorType);
     parsePrecedence((Precedence)(rule->precedence + 1));
 
-    //TODO: STAR EQUAL AND STUFF LIKE TAHT
     switch(operatorType) {
         case TOKEN_NOT_EQUAL:  emitBytes(OP_EQUAL, OP_NOT); break;
         case TOKEN_EQUAL_EQUAL: emitByte(OP_EQUAL); break;
@@ -413,7 +394,7 @@ static void binary(bool canAssign) {
         case TOKEN_MINUS:       emitByte(OP_SUBTRACT); break;
         case TOKEN_STAR:        emitByte(OP_MULTIPLY); break;
         case TOKEN_SLASH:       emitByte(OP_DIVIDE); break;
-        default: return; // Unreachable, but keeps the compiler happy.
+        default: return; 
     }
 }
 
@@ -429,7 +410,13 @@ static void unary(bool canAssign) {
     }
 } 
 
-
+static void postfix(bool canAssign) {
+    switch(parser.previous.type) {
+        case TOKEN_INCREMENT: emitByte(OP_POST_INCREMENT); break;
+        case TOKEN_DECREMENT: emitByte(OP_POST_DECREMENT); break;
+        default: return;
+    }
+}
 
 static void literal(bool canAssign) {
     switch (parser.previous.type) {
@@ -488,14 +475,14 @@ ParseRule rules[] = {
   [TOKEN_PLUS]          = {NULL,     binary,  PREC_TERM},
   [TOKEN_SLASH]         = {NULL,     binary,  PREC_FACTOR},
   [TOKEN_STAR]          = {NULL,     binary,  PREC_FACTOR},
-        /*Handled in the Variable function itself*/ 
-  [TOKEN_INCREMENT]     = {NULL,     NULL, PREC_POSTFIX},
-  [TOKEN_DECREMENT]     = {NULL,     NULL, PREC_POSTFIX},
-  
-  [TOKEN_PLUS_EQUAL]    = {NULL,     binary,  PREC_ASSIGNMENT},
-  [TOKEN_MINUS_EQUAL]   = {NULL,     binary,  PREC_ASSIGNMENT},
-  [TOKEN_SLASH_EQUAL]   = {NULL,     binary,  PREC_ASSIGNMENT},
-  [TOKEN_STAR_EQUAL]   = {NULL,      binary,  PREC_ASSIGNMENT},
+
+  [TOKEN_INCREMENT]     = {NULL,     postfix, PREC_POSTFIX},
+  [TOKEN_DECREMENT]     = {NULL,     postfix, PREC_POSTFIX},
+
+  [TOKEN_PLUS_EQUAL]    = {NULL,     NULL,  PREC_ASSIGNMENT},
+  [TOKEN_MINUS_EQUAL]   = {NULL,     NULL,  PREC_ASSIGNMENT},
+  [TOKEN_SLASH_EQUAL]   = {NULL,     NULL,  PREC_ASSIGNMENT},
+  [TOKEN_STAR_EQUAL]   = {NULL,      NULL,  PREC_ASSIGNMENT},
   [TOKEN_SEMICOLON]     = {NULL,     NULL,    PREC_NONE},
   [TOKEN_COMMA]         = {NULL,     NULL,    PREC_NONE},
   [TOKEN_DOT]           = {NULL,     dot,     PREC_CALL},
@@ -749,12 +736,6 @@ static void function(FunctionType type) {
     ObjFunction* function = endCompiler();
     emitBytes(OP_CONSTANT, makeConstant(C_TO_OBJ_VALUE(function)));
 
-    //TODO: REMOVE THE UPVALUE SYSTEM
-    // for (int i = 0; i < function->upvalueCount; i++) {
-    //     emitByte(compiler.upvalues[i].isLocal ? 1 : 0);
-    //     emitByte(compiler.upvalues[i].index);
-    // }
-
 }
 
 static uint8_t argumentList() {
@@ -774,6 +755,10 @@ static uint8_t argumentList() {
 }
 
 static void functionDeclaration() {
+    if (current->scopeDepth > 0) {
+        errorAtCurrent("Can't declare a function in a nested scope.");
+    }
+
     uint8_t global = parseVariable("Expect function name.");
     markInitialized();
 
@@ -784,10 +769,11 @@ static void functionDeclaration() {
     
     defineVariable(global);
 
+    //RUN THE SETUP FUNCTION
     if (current->type == TYPE_SCRIPT && isSetup) {
-        emitBytes(OP_GET_GLOBAL, global); // Load the setup function.
-        emitBytes(OP_CALL, 0);             // Call it with 0 arguments.
-        emitByte(OP_POP);                  // Pop its return value.
+        emitBytes(OP_GET_GLOBAL, global); 
+        emitBytes(OP_CALL, 0);             
+        emitByte(OP_POP);                  
     }
 
 }
@@ -803,46 +789,23 @@ static void markInitialized() {
     current->locals[current->localCount - 1].depth = current->scopeDepth;
 }
 
-// static void defineVariable(uint8_t global) {
-//     // If we are in a local scope, the value is already on the stack.
-//     // We just need to mark it as initialized and ready for use.
-//     if (current->scopeDepth > 0) {
-//         // The exception is the top level of setup(), which defines globals.
-//         if (current->type == TYPE_SETUP && current->scopeDepth == 1) {
-//             emitBytes(OP_DEFINE_GLOBAL, global);
-//             return;
-//         } 
-//         // It's a true local variable.
-//         markInitialized();
-//         return;
-//     }
-
-//     // This is a global variable.
-//     emitBytes(OP_DEFINE_GLOBAL, global);
-//     // errorAtCurrent("Cannot define global variable at top level.");
-// }
-
 static void defineVariable(uint8_t global) {
-    // Determine if we are defining a global or local variable based on your rules.
     bool isGlobal = false;
 
     if (current->scopeDepth == 0) {
-        // Functions declared at the top level are global.
-        // `var` is disallowed at this level by the `declaration()` function,
-        // so we can be sure this is a function.
+        //Var is not coming her cos of declaration
+        //THIS IS A FUNCTION
         isGlobal = true;
     } else if (current->type == TYPE_SETUP && current->scopeDepth == 1) {
-        // `var` at the top-level of `setup()` creates a global.
+        // var in setup creates global
         isGlobal = true;
     }
-    // In all other cases, it's a local variable (e.g., inside any other function,
-    // or in a nested block inside `setup`).
+
 
     if (isGlobal) {
         emitBytes(OP_DEFINE_GLOBAL, global);
     } else {
-        // It's a local variable. The value is already on the stack.
-        // We just need to mark it as initialized and ready for use.
+        // Local variable on stack, mark init for use
         markInitialized();
     }
 }
@@ -903,33 +866,38 @@ static void namedVariable(Token name, bool canAssign){
         setOp = OP_SET_GLOBAL;
     }
 
-    if (match(TOKEN_INCREMENT)){
-        emitBytes(OP_POST_INCREMENT, arg);
-    }
-    else if(match(TOKEN_DECREMENT)){
-        emitBytes(OP_POST_DECREMENT, arg);
-    }
-    else if (canAssign && match(TOKEN_EQUAL)) {
+    if (canAssign && match(TOKEN_EQUAL)) {
         expression();
         emitBytes(setOp, (uint8_t)arg);
-    }
-    else{
+    } 
+    else if (canAssign && match(TOKEN_PLUS_EQUAL)) {
+        emitBytes(getOp, (uint8_t)arg);
+        expression();                     
+        emitByte(OP_ADD);                 
+        emitBytes(setOp, (uint8_t)arg); 
+    } 
+    else if (canAssign && match(TOKEN_MINUS_EQUAL)) {
+        emitBytes(getOp, (uint8_t)arg);
+        expression();
+        emitByte(OP_SUBTRACT);
+        emitBytes(setOp, (uint8_t)arg);
+    } 
+    else if (canAssign && match(TOKEN_STAR_EQUAL)) {
+        emitBytes(getOp, (uint8_t)arg);
+        expression();
+        emitByte(OP_MULTIPLY);
+        emitBytes(setOp, (uint8_t)arg);
+    } 
+    else if (canAssign && match(TOKEN_SLASH_EQUAL)) {
+        emitBytes(getOp, (uint8_t)arg);
+        expression();
+        emitByte(OP_DIVIDE);
+        emitBytes(setOp, (uint8_t)arg);
+    } 
+    else {
         emitBytes(getOp, (uint8_t)arg);
     }
-
-    // emitBytes(OP_GET_GLOBAL, arg);
 }
-
-
-
-// static uint8_t parseVariable(const char* errorMessage) {
-//     consume(TOKEN_IDENTIFIER, errorMessage);
-
-//     declareVariable();
-//     if(current->scopeDepth > 0) return 0;
-
-//     return identifierConstant(&parser.previous);
-// }
 
 static uint8_t parseVariable(const char* errorMessage) {
     consume(TOKEN_IDENTIFIER, errorMessage);
@@ -941,12 +909,10 @@ static uint8_t parseVariable(const char* errorMessage) {
                     !(current->type == TYPE_SETUP && current->scopeDepth == 1));
     
     if (isLocal) {
-        // It's a local variable, return a dummy index.
-        // The variable lives on the stack and isn't looked up by name.
+        //Dummy index for locals
         return 0;
     } else {
-        // It's a global variable. Add its name to the constant table
-        // and return the index.
+        //Global index for globals
         return identifierConstant(&parser.previous);
     }
 }
@@ -1008,8 +974,6 @@ ObjFunction* compile(const char* source) {
     while(!match(TOKEN_EOF)){
         declaration();
     }
-
-    // endCompiler();
 
     ObjFunction* function = endCompiler();
     return parser.hadError ? NULL : function;
