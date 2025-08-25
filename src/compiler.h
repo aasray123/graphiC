@@ -5,5 +5,5 @@
 #include "object.h"
 
 ObjFunction* compile(const char* source);
-
+//RESET
 #endif
