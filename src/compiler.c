@@ -144,7 +144,8 @@ static void initCompiler(Compiler* compiler, FunctionType type) {
     compiler->function = newFunction();
     current = compiler;
 
-    if(type != TYPE_SCRIPT || type != TYPE_SETUP){
+    //&& type != TYPE_SETUP
+    if(type != TYPE_SCRIPT ){
         current->function->name = copyString(parser.previous.start, parser.previous.length);
     }
 
@@ -739,8 +740,8 @@ static void function(FunctionType type) {
 
     // Create the function object.
     ObjFunction* function = endCompiler();
-    //TODO: FIX THE CLOSURE OUTPUT
-    // emitBytes(OP_CLOSURE, makeConstant(C_TO_OBJ_VALUE(function)));
+    emitBytes(OP_CONSTANT, makeConstant(C_TO_OBJ_VALUE(function)));
+
     //TODO: REMOVE THE UPVALUE SYSTEM
     // for (int i = 0; i < function->upvalueCount; i++) {
     //     emitByte(compiler.upvalues[i].isLocal ? 1 : 0);
@@ -909,13 +910,34 @@ static void namedVariable(Token name, bool canAssign){
 }
 
 
+
+// static uint8_t parseVariable(const char* errorMessage) {
+//     consume(TOKEN_IDENTIFIER, errorMessage);
+
+//     declareVariable();
+//     if(current->scopeDepth > 0) return 0;
+
+//     return identifierConstant(&parser.previous);
+// }
+
 static uint8_t parseVariable(const char* errorMessage) {
     consume(TOKEN_IDENTIFIER, errorMessage);
 
     declareVariable();
-    if(current->scopeDepth > 0) return 0;
 
-    return identifierConstant(&parser.previous);
+    // A variable is local if we are in a scope AND it's not the top level of setup.
+    bool isLocal = (current->scopeDepth > 0 && 
+                    !(current->type == TYPE_SETUP && current->scopeDepth == 1));
+    
+    if (isLocal) {
+        // It's a local variable, return a dummy index.
+        // The variable lives on the stack and isn't looked up by name.
+        return 0;
+    } else {
+        // It's a global variable. Add its name to the constant table
+        // and return the index.
+        return identifierConstant(&parser.previous);
+    }
 }
 
 static void varDeclaration() {
