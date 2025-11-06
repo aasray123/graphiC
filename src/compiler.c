@@ -434,7 +434,7 @@ static void string() {
 }
 
 static void number(bool canAssign){
-    //str to double function. 
+    //str to double function 
     //The NULL is the variable that will receive the address of the end of the number
     //Not needed in this scenario
     double value = strtod(parser.previous.start, NULL);
@@ -502,6 +502,7 @@ ParseRule rules[] = {
   [TOKEN_AND]           = {NULL,     and_,    PREC_AND},
   [TOKEN_OR]            = {NULL,     or_,     PREC_OR},
   [TOKEN_ELSE]          = {NULL,     NULL,    PREC_NONE},
+  //TODO: MAKE THE FOR ++ WORK
   [TOKEN_FOR]           = {NULL,     NULL,    PREC_NONE},
   [TOKEN_WHILE]         = {NULL,     NULL,    PREC_NONE},
   [TOKEN_FUNCTION]      = {NULL,     NULL,    PREC_NONE},
@@ -716,15 +717,15 @@ static void function(FunctionType type) {
     // Compile the parameter list.
     consume(TOKEN_LEFT_PAREN, "Expect '(' after function name.");
     if (!check(TOKEN_RIGHT_PAREN)) {
-    do {
-        current->function->arity++;
-        if (current->function->arity > 255) {
-            errorAtCurrent("Can't have more than 255 parameters.");
-        }
+        do {
+            current->function->arity++;
+            if (current->function->arity > 255) {
+                errorAtCurrent("Can't have more than 255 parameters.");
+            }
 
-        uint8_t paramConstant = parseVariable("Expect parameter name.");
-        defineVariable(paramConstant);
-    } while (match(TOKEN_COMMA));
+            uint8_t paramConstant = parseVariable("Expect parameter name.");
+            defineVariable(paramConstant);
+        } while (match(TOKEN_COMMA));
     }
     consume(TOKEN_RIGHT_PAREN, "Expect ')' after parameters.");
 
@@ -753,7 +754,7 @@ static uint8_t argumentList() {
     consume(TOKEN_RIGHT_PAREN, "Expect ')' after arguments.");
     return argCount;
 }
-
+//TODO: See if setup function works correctly
 static void functionDeclaration() {
     if (current->scopeDepth > 0) {
         errorAtCurrent("Can't declare a function in a nested scope.");
@@ -865,7 +866,7 @@ static void namedVariable(Token name, bool canAssign){
         getOp = OP_GET_GLOBAL;
         setOp = OP_SET_GLOBAL;
     }
-
+    //TODO: See if the += and stuff work with Strings :D
     if (canAssign && match(TOKEN_EQUAL)) {
         expression();
         emitBytes(setOp, (uint8_t)arg);
@@ -978,4 +979,12 @@ ObjFunction* compile(const char* source) {
     ObjFunction* function = endCompiler();
     return parser.hadError ? NULL : function;
 
+}
+
+void markCompilerRoots() {
+    Compiler* compiler = current;
+    while (compiler != NULL) {
+        markObject((Obj*)compiler->function);
+        compiler = compiler->enclosing;
+    }
 }
