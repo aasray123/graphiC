@@ -9,6 +9,7 @@
 #include <string.h>
 #include <time.h>
 
+
 VM vm;
 
 static void resetStack() {
@@ -42,18 +43,27 @@ static void runtimeError(const char* format, ...){
 
     resetStack();
 }
+//TODO: NATIVE IMPLEMENTATION
+// static void defineNative(const char* name, NativeFn function) {
+//   push(OBJ_VAL(copyString(name, (int)strlen(name))));
+//   push(OBJ_VAL(newNative(function)));
+//   tableSet(&vm.globals, AS_STRING(vm.stack[0]), vm.stack[1]);
+//   pop();
+//   pop();
+// }
 
 void initVM() {
     resetStack();
+
     vm.objects = NULL;
 
-    //TODO: GC
-    // vm.grayCount = 0;
-    // vm.grayCapacity = 0;
-    // vm.grayStack = NULL;
-    // vm.bytesAllocated = 0;
-    // vm.nextGC = 1024 * 1024;
-    // vm.nextGC = 2500;
+    vm.bytesAllocated = 0;
+    vm.nextGC = 1024 * 1024;
+
+    vm.grayCount = 0;
+    vm.grayCapacity = 0;
+    vm.grayStack = NULL;
+    vm.bytesAllocated = 0;
 
     initTable(&vm.strings);
     initTable(&vm.globals);
@@ -111,6 +121,7 @@ static bool call(ObjFunction* function, int argCount) {
 
 static bool callValue(Value callee, int argCount) {
     if (IS_OBJ(callee)) {
+        //TODO: Struct
         switch (OBJ_TYPE(callee)) {
             case OBJ_FUNCTION:
                 return call(AS_FUNCTION(callee), argCount);
@@ -127,9 +138,34 @@ static bool callValue(Value callee, int argCount) {
             }
     }
     //TODO: FUNCTIONS AND etc..
-    runtimeError("Can only call functions.");
+    runtimeError("Can only call functions and structs.");
     return false;
 }
+
+/*
+static bool invoke(ObjString* name, int argCount) {
+  Value receiver = peek(argCount);
+
+
+  if (!IS_INSTANCE(receiver)) {
+    runtimeError("Only instances have methods.");
+    return false;
+  }
+
+
+  ObjInstance* instance = AS_INSTANCE(receiver);
+
+
+  Value value;
+  if (tableGet(&instance->fields, name, &value)) {
+    vm.stackTop[-argCount - 1] = value;
+    return callValue(value, argCount);
+  }
+
+
+  return invokeFromClass(instance->klass, name, argCount);
+}
+*/
 
 static bool isFalsey(Value value){
     return IS_NULL(value) || (IS_BOOL(value) && !BOOL_VALUE_TO_C(value));
