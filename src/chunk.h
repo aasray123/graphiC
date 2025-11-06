@@ -60,6 +60,5 @@ void initChunk(Chunk* chunk);
 void writeChunk(Chunk* chunk, uint8_t byte, int line);
 void freeChunk(Chunk* chunk);
 int addConstant(Chunk* chunk, Value value);
-int writeConstant(Chunk* chunk, Value value, int line);
 
 #endif
