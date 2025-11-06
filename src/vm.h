@@ -26,17 +26,15 @@ typedef struct {
     ObjString* initString;
     ObjString* drawString;
     Table globals;
-
-    //TODO: GC
-    // size_t bytesAllocated;
-    // size_t nextGC;
-
+    //Only for old gen objects
     Obj* objects;
-    
-    //TOOD: GC
-    // int grayCount;
-    // int grayCapacity;
-    // Obj** grayStack;
+
+    size_t bytesAllocated;
+    size_t nextGC;
+        
+    int grayCount;
+    int grayCapacity;
+    Obj** grayStack;
 } VM;
 
 typedef enum {
