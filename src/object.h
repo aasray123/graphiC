@@ -25,6 +25,7 @@ typedef enum {
 } ObjType;
 
 struct Obj {
+    bool isMarked;
     ObjType type;
     struct Obj* next;
 };
@@ -54,6 +55,8 @@ struct ObjString {
 ObjFunction* newFunction();
 ObjNative* newNative(NativeFn function);
 ObjString* takeString(char* chars, int length);
+
+// size_t sizeOfObject(Obj* object);
 
 void printObject(Value value);
 ObjString* copyString(const char* chars, int length);
