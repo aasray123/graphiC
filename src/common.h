@@ -1,5 +1,5 @@
-#ifndef clox_common_h
-#define clox_common_h
+#ifndef graphiC_common_h
+#define graphiC_common_h
 
 #include <stdbool.h>
 #include <stddef.h>

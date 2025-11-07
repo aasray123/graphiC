@@ -94,7 +94,7 @@ void markObject(Obj* object) {
 
 
 void markValue(Value value) {
-  if (IS_OBJ(value)) markObject(OBJ_VALUE_TO_C(value));
+    if (IS_OBJ(value)) markObject(OBJ_VALUE_TO_C(value));
 }
 
 
