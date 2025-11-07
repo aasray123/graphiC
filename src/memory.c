@@ -77,7 +77,7 @@ void markObject(Obj* object) {
     if (object->isMarked) return;
     #ifdef DEBUG_LOG_GC
     printf("%p mark ", (void*)object);
-    printValue(OBJ_VAL(object));
+    printValue(C_TO_OBJ_VALUE(object));
     printf("\n");
     #endif
 
@@ -94,7 +94,7 @@ void markObject(Obj* object) {
 
 
 void markValue(Value value) {
-  if (IS_OBJ(value)) markObject(AS_OBJ(value));
+  if (IS_OBJ(value)) markObject(OBJ_VALUE_TO_C(value));
 }
 
 
@@ -128,7 +128,7 @@ static void blackenObject(Obj* object) {
     switch (object->type) {
         case OBJ_FUNCTION: {
             ObjFunction* function = (ObjFunction*)object;
-            updateAndMarkPointer((Obj**)&function->name);
+            markObject((Obj*)function->name);
             markArray(&function->chunk.constants);
             break;
         }
