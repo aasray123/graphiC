@@ -16,6 +16,7 @@ static Obj* allocateObject(size_t size, ObjType type) {
     object->type = type;
 
     object->isMarked = false;
+    object->isTenured = false;
     object->next = vm.objects;
     vm.objects = object;
 
