@@ -114,3 +114,12 @@ void printObject(Value value){
             break;
     }
 }
+void appendRememberedSet(RememberedSet* set, Obj* object) {
+    if (set->count + 1 > set->capacity) {
+        int oldCapacity = set->capacity;
+        set->capacity = GROW_CAPACITY(oldCapacity);
+        set->objects = GROW_ARRAY(Obj*, set->objects, oldCapacity, set->capacity);
+    }
+    set->objects[set->count] = object;
+    set->count++;
+}
