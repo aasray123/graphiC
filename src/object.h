@@ -52,6 +52,12 @@ struct ObjString {
     uint32_t hash;
 };
 
+typedef struct {
+    int capacity;
+    int count;
+    Obj** objects;
+} RememberedSet;
+
 ObjFunction* newFunction();
 ObjNative* newNative(NativeFn function);
 ObjString* takeString(char* chars, int length);
@@ -64,5 +70,7 @@ ObjString* copyString(const char* chars, int length);
 static inline bool isObjType(Value value, ObjType type){
     return IS_OBJ(value) && OBJ_VALUE_TO_C(value)->type == type;
 }
+
+void appendRememberedSet(RememberedSet* set, Obj* object);
 
 #endif
