@@ -151,13 +151,13 @@ static void sweep() {
     while (object != NULL) {
         if (object->isMarked) {
 
-        object->isMarked = false;
+            object->isMarked = false;
 
-        previous = object;
-        object = object->next;
+            previous = object;
+            object = object->next;
         } else {
-        Obj* unreached = object;
-        object = object->next;
+            Obj* unreached = object;
+            object = object->next;
         if (previous != NULL) {
             previous->next = object;
         } else {
