@@ -27,6 +27,7 @@ typedef enum {
 struct Obj {
     bool isMarked;
     bool isTenured;
+    bool isQueued;
     ObjType type;
     struct Obj* next;
 };
@@ -72,6 +73,7 @@ static inline bool isObjType(Value value, ObjType type){
     return IS_OBJ(value) && OBJ_VALUE_TO_C(value)->type == type;
 }
 
+void promoteObject(Obj* object);
 void appendRememberedSet(RememberedSet* set, Obj* object);
 
 #endif
