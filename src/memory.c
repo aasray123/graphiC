@@ -16,11 +16,16 @@ void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
 
     if (newSize > oldSize) {
         #ifdef DEBUG_STRESS_GC
-        collectGarbage();
+        collectGarbage(true);
         #endif
-        if (vm.bytesAllocated > vm.nextGC) {
-            collectGarbage();
+
+        if(vm.bytesAllocatedTenure > vm.nextGCTenure){
+            collectGarbage(true);
         }
+        else if (vm.bytesAllocated > vm.nextGC) {
+            collectGarbage(false);
+        }
+        
     }
 
     if (newSize == 0) {
@@ -103,7 +108,7 @@ static void markArray(ValueArray* array) {
     }
 }
 
-static void markRoots() {
+static void markRoots(bool isMajor) {
     for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
         markValue(*slot);
     }
@@ -112,13 +117,16 @@ static void markRoots() {
         markObject((Obj*)vm.frames[i].function);
     }
 
-    for (int i = 0; i < vm.remSet.count; i++) {
-        blackenObject((Obj*)vm.remSet.objects[i]);
+    if(!isMajor){
+        for (int i = 0; i < vm.remSet.count; i++) {
+            blackenObject((Obj*)vm.remSet.objects[i]);
+        }
     }
 
     markTable(&vm.globals);
     markCompilerRoots();
     markObject((Obj*)vm.initString);
+
 }
 
 static void blackenObject(Obj* object) {
@@ -172,31 +180,6 @@ static void sweep() {
         }
     }
 }
-
-void collectGarbage() {
-    #ifdef DEBUG_LOG_GC
-    printf("-- gc begin\n");
-    size_t before = vm.bytesAllocated;
-
-    #endif
-    
-    markRoots();
-    traceReferences();
-    tableRemoveWhite(&vm.strings);
-    sweep();
-
-    vm.nextGC = vm.bytesAllocated * GC_HEAP_GROW_FACTOR;
-    #ifdef DEBUG_LOG_GC
-    printf("-- gc end\n");
-
-    printf("   collected %zu bytes (from %zu to %zu) next at %zu\n",
-            before - vm.bytesAllocated, before, vm.bytesAllocated,
-            vm.nextGC);
-
-    #endif
-}
-
-
 
 void appendRememberedSet(RememberedSet* set, Obj* object) {
     if (set->count + 1 > set->capacity) {
@@ -263,4 +246,28 @@ void writeBarrier(Obj* source, Value value){
     }
 
 }
+
+void collectGarbage(bool isMajor) {
+    #ifdef DEBUG_LOG_GC
+    printf("-- gc begin (%s)\n", isMajor ? "major" : "minor");
+    size_t before = vm.bytesAllocated;
+
+    #endif
+
+    markRoots(isMajor);
+    traceReferences();
+    tableRemoveWhite(&vm.strings);
+    sweep(isMajor);
+
+    vm.nextGC = vm.bytesAllocated * GC_HEAP_GROW_FACTOR;
+    #ifdef DEBUG_LOG_GC
+    printf("-- gc end\n");
+
+    printf("   collected %zu bytes (from %zu to %zu) next at %zu\n",
+            before - vm.bytesAllocated, before, vm.bytesAllocated,
+            vm.nextGC);
+
+    #endif
+}
+
 
