@@ -25,5 +25,7 @@ void markObject(Obj* object);
 void markValue(Value value);
 void collectGarbage();
 void freeObjects();
+void promoteObject(Obj* object);
+void appendRememberedSet(RememberedSet* set, Obj* object);
 
 #endif
