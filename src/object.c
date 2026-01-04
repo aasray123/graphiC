@@ -17,6 +17,7 @@ static Obj* allocateObject(size_t size, ObjType type) {
 
     object->isMarked = false;
     object->isTenured = false;
+    object->isQueued = false;
     object->next = vm.objects;
     vm.objects = object;
 
@@ -122,6 +123,7 @@ void appendRememberedSet(RememberedSet* set, Obj* object) {
         set->capacity = GROW_CAPACITY(oldCapacity);
         set->objects = GROW_ARRAY(Obj*, set->objects, oldCapacity, set->capacity);
     }
+    object->isQueued = true;
     set->objects[set->count] = object;
     set->count++;
 }
@@ -164,7 +166,7 @@ void promoteObject(Obj* object, Obj* previous) {
         }
     }
 
-    if (pointsToYoung) {
+    if (pointsToYoung && !object->isQueued) {
         appendRememberedSet(&vm.remSet, object);
     }
 
