@@ -34,7 +34,6 @@ void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
     return result;
 }
 
-
 static void freeObject(Obj* object){
     #ifdef DEBUG_LOG_GC
         printf("%p free type %d\n", (void*)object, object->type);
@@ -113,6 +112,9 @@ static void markRoots() {
         markObject((Obj*)vm.frames[i].function);
     }
 
+    for (int i = 0; i < vm.remSet.count; i++) {
+        blackenObject((Obj*)vm.remSet.objects[i]);
+    }
 
     markTable(&vm.globals);
     markCompilerRoots();
@@ -155,16 +157,18 @@ static void sweep() {
 
             previous = object;
             object = object->next;
-        } else {
+        } 
+        else {
             Obj* unreached = object;
             object = object->next;
-        if (previous != NULL) {
-            previous->next = object;
-        } else {
-            vm.objects = object;
-        }
+            if (previous != NULL) {
+                previous->next = object;
+            } 
+            else {
+                vm.objects = object;
+            }
 
-        freeObject(unreached);
+            freeObject(unreached);
         }
     }
 }
