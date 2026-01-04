@@ -253,3 +253,14 @@ void promoteObject(Obj* object, Obj* previous) {
 
 }
 
+void writeBarrier(Obj* source, Value value){
+    if(!IS_OBJ(value)) return;
+    Obj* target = OBJ_VALUE_TO_C(value);
+
+    if(source->isTenured && !target->isTenured && !source->isQueued){
+        source->isQueued = true;
+        appendRememberedSet(&vm.remSet, source);
+    }
+
+}
+
