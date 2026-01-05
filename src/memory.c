@@ -167,7 +167,7 @@ static void sweep(bool isMajor) {
             object->isMarked = false;
             cursor* = object->next;
             promoteObject(object);
-
+            
         } 
         else {
             cursor* = object->next;
@@ -249,7 +249,6 @@ bool remSetChecker(Obj* object){
         default:
             return false;
     }
-
 }
 
 void writeBarrier(Obj* source, Value value){
