@@ -155,10 +155,7 @@ static void traceReferences() {
     }
 }
 
-static void sweep() {
-    Obj* previous = NULL;
-    Obj* object = vm.objects;
-    while (object != NULL) {
+bool remSetChecker(Obj* object);
         if (object->isMarked) {
 
             object->isMarked = false;
@@ -192,46 +189,45 @@ void appendRememberedSet(RememberedSet* set, Obj* object) {
     set->count++;
 }
 
-void promoteObject(Obj* object, Obj* previous) {
+void promoteObject(Obj* object) {
     if (object->isTenured) {
         error("Object is already tenured.");
         return;
     }
     object->isTenured = true;
-
-    if(previous != NULL){
-        previous->next = object->next;
-    }
-    else {
-        vm.objects = object->next;
-    }
-
     object->next = vm.tenureObjects;
     vm.tenureObjects = object;
     
-    bool pointsToYoung = false;
+    bool pointsToYoung = remSetChecker(object);
+    
+
+    if (pointsToYoung && !object->isQueued) {
+        appendRememberedSet(&vm.remSet, object);
+    }
+
+}
+
+bool remSetChecker(Obj* object){
     switch(object->type) {
         case OBJ_FUNCTION: {
             ObjFunction* function = AS_FUNCTION(C_TO_OBJ_VALUE(object));
             //Name is ObjString*
             if (!function->name->obj.isTenured) {
-                pointsToYoung = true;
+                return true;
             }
             for (int i = 0 ; i < function->chunk.constants.count; i++) {
                 Value constant = function->chunk.constants.values[i];
                 if (IS_OBJ(constant)) {
                     Obj* constObj = OBJ_VALUE_TO_C(constant);
                     if (!constObj->isTenured) {
-                        pointsToYoung = true;
-                        break;
+                        return true;
+                        
                     }
                 }
             }
         }
-    }
-
-    if (pointsToYoung && !object->isQueued) {
-        appendRememberedSet(&vm.remSet, object);
+        default:
+            return false;
     }
 
 }
