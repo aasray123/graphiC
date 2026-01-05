@@ -76,9 +76,10 @@ void freeObjects() {
 
 
 
-void markObject(Obj* object) {
+void markObject(Obj* object, bool isMajor) {
     if (object == NULL) return;
     if (object->isMarked) return;
+    if (object->isTenured && !isMajor) return;
     #ifdef DEBUG_LOG_GC
     printf("%p mark ", (void*)object);
     printValue(C_TO_OBJ_VALUE(object));
@@ -97,39 +98,39 @@ void markObject(Obj* object) {
 }
 
 
-void markValue(Value value) {
-    if (IS_OBJ(value)) markObject(OBJ_VALUE_TO_C(value));
+void markValue(Value value, bool isMajor) {
+    if (IS_OBJ(value)) markObject(OBJ_VALUE_TO_C(value), isMajor);
 }
 
 
-static void markArray(ValueArray* array) {
+static void markArray(ValueArray* array, bool isMajor) {
     for (int i = 0; i < array->count; i++) {
-        markValue(array->values[i]);
+        markValue(array->values[i], isMajor);
     }
 }
 
 static void markRoots(bool isMajor) {
     for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
-        markValue(*slot);
+        markValue(*slot, isMajor);
     }
 
     for (int i = 0; i < vm.frameCount; i++) {
-        markObject((Obj*)vm.frames[i].function);
+        markObject((Obj*)vm.frames[i].function, isMajor);
     }
 
     if(!isMajor){
         for (int i = 0; i < vm.remSet.count; i++) {
-            blackenObject((Obj*)vm.remSet.objects[i]);
+            blackenObject((Obj*)vm.remSet.objects[i], isMajor);
         }
     }
 
-    markTable(&vm.globals);
-    markCompilerRoots();
-    markObject((Obj*)vm.initString);
+    markTable(&vm.globals, isMajor);
+    markCompilerRoots(isMajor);
+    markObject((Obj*)vm.initString, isMajor);
 
 }
 
-static void blackenObject(Obj* object) {
+static void blackenObject(Obj* object, bool isMajor) {
     #ifdef DEBUG_LOG_GC
         printf("%p blacken ", (void*)object);
         printValue(C_TO_OBJ_VALUE(object));
@@ -138,8 +139,8 @@ static void blackenObject(Obj* object) {
     switch (object->type) {
         case OBJ_FUNCTION: {
             ObjFunction* function = (ObjFunction*)object;
-            markObject((Obj*)function->name);
-            markArray(&function->chunk.constants);
+            markObject((Obj*)function->name, isMajor);
+            markArray(&function->chunk.constants, isMajor);
             break;
         }
         case OBJ_NATIVE:
@@ -148,10 +149,10 @@ static void blackenObject(Obj* object) {
     }
 }
 
-static void traceReferences() {
+static void traceReferences(bool isMajor) {
     while (vm.grayCount > 0) {
         Obj* object = vm.grayStack[--vm.grayCount];
-        blackenObject(object);
+        blackenObject(object, isMajor);
     }
 }
 
@@ -270,8 +271,8 @@ void collectGarbage(bool isMajor) {
     #endif
 
     markRoots(isMajor);
-    traceReferences();
-    tableRemoveWhite(&vm.strings);
+    traceReferences(isMajor);
+    tableRemoveWhite(&vm.strings, isMajor);
     sweep(isMajor);
 
     vm.nextGC = vm.bytesAllocated * GC_HEAP_GROW_FACTOR;

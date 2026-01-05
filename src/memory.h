@@ -21,9 +21,9 @@
 #define FREE(type, pointer) reallocate(pointer, sizeof(type), 0)
 
 void* reallocate(void* pointer, size_t oldSize, size_t newSize);
-void markObject(Obj* object);
-void markValue(Value value);
-void collectGarbage();
+void markObject(Obj* object, bool isMajor);
+void markValue(Value value, bool isMajor);
+void collectGarbage(bool isMajor);
 void freeObjects();
 
 void promoteObject(Obj* object);

@@ -5,6 +5,6 @@
 #include "object.h"
 
 ObjFunction* compile(const char* source);
-void markCompilerRoots();
+void markCompilerRoots(bool isMajor);
 //RESET
 #endif

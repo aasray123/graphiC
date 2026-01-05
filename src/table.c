@@ -139,21 +139,24 @@ ObjString* tableFindString(Table* table, const char* chars, int length, uint32_t
     }
 }
 
-void tableRemoveWhite(Table* table) {
+void tableRemoveWhite(Table* table, bool isMajor) {
     for (int i = 0; i < table->capacity; i++) {
         Entry* entry = &table->entries[i];
+        if(entry->key != NULL && !isMajor && entry->key->obj.isTenured){
+            continue;
+        }
         if (entry->key != NULL && !entry->key->obj.isMarked) {
-        tableDelete(table, entry->key);
+            tableDelete(table, entry->key);
         }
     }
 }
 
 
-void markTable(Table* table) {
+void markTable(Table* table, bool isMajor) {
     for (int i = 0; i < table->capacity; i++) {
         Entry* entry = &table->entries[i];
-        markObject((Obj*)entry->key);
-        markValue(entry->value);
+        markObject((Obj*)entry->key, isMajor);
+        markValue(entry->value, isMajor);
     }
 }
 

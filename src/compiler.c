@@ -981,10 +981,10 @@ ObjFunction* compile(const char* source) {
 
 }
 
-void markCompilerRoots() {
+void markCompilerRoots(bool isMajor) {
     Compiler* compiler = current;
     while (compiler != NULL) {
-        markObject((Obj*)compiler->function);
+        markObject((Obj*)compiler->function, isMajor);
         compiler = compiler->enclosing;
     }
 }
