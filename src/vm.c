@@ -58,7 +58,10 @@ void initVM() {
     vm.objects = NULL;
 
     vm.bytesAllocated = 0;
-    vm.nextGC = 1024 * 1024;
+    vm.nextGC = vm.nextGCTenure = 1024 * 1024;
+
+    vm.bytesAllocatedTenure = 0;
+    
 
     vm.grayCount = 0;
     vm.grayCapacity = 0;
@@ -258,6 +261,8 @@ static InterpretResult run() {
             }
             case OP_DEFINE_GLOBAL: {
                 ObjString* name = READ_STRING();
+                //Don't need to make the remSet work here 
+                //Globals are always scanned :D
                 tableSet(&vm.globals, name, peek(0));
                 pop();
                 break;

@@ -26,7 +26,7 @@ typedef struct {
     ObjString* initString;
     ObjString* drawString;
     Table globals;
-    //Only for old gen objects
+
     Obj* objects;
 
     size_t bytesAllocated;
@@ -35,6 +35,19 @@ typedef struct {
     int grayCount;
     int grayCapacity;
     Obj** grayStack;
+
+    //OLD objects
+    bool isMajor;
+    RememberedSet remSet;
+    Obj* tenureObjects;
+
+    size_t bytesAllocatedTenure;
+    size_t nextGCTenure;
+
+
+    /*
+    
+    */
 } VM;
 
 typedef enum {
@@ -51,5 +64,6 @@ InterpretResult interpret(const char* source);
 
 void push(Value value);
 Value pop();
+
 
 #endif
