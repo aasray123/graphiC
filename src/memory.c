@@ -156,24 +156,44 @@ static void traceReferences() {
 }
 
 bool remSetChecker(Obj* object);
+
+static void sweep(bool isMajor) {
+    Obj** cursor = &vm.objects;
+
+    while (*cursor != NULL) {
+        Obj* object = *cursor;
         if (object->isMarked) {
 
             object->isMarked = false;
+            cursor* = object->next;
+            promoteObject(object);
 
-            previous = object;
-            object = object->next;
         } 
         else {
-            Obj* unreached = object;
-            object = object->next;
-            if (previous != NULL) {
-                previous->next = object;
-            } 
-            else {
-                vm.objects = object;
-            }
+            cursor* = object->next;
+            freeObject(object);
+        }
+    }
 
-            freeObject(unreached);
+    for (int i = 0; i < vm.remSet.count; i++) {
+        vm.remSet.objects[i]->isQueued = false;
+    }
+    vm.remSet.count = 0;
+
+    if (isMajor) {
+        cursor = &vm.tenureObjects;
+        while (*cursor != NULL) {
+            Obj* object = *cursor;
+            if (object->isMarked) {
+                object->isMarked = false;
+                if(remSetChecker(object)){
+                    appendRememberedSet(&vm.remSet, object);
+                }
+                cursor = &object->next;
+            } else {
+                *cursor = object->next;
+                freeObject(object);
+            }
         }
     }
 }
