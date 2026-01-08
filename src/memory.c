@@ -188,14 +188,12 @@ static void sweep(bool isMajor) {
     while (*cursor != NULL) {
         Obj* object = *cursor;
         if (object->isMarked) {
-
             object->isMarked = false;
-            cursor* = object->next;
+            *cursor = object->next;
             promoteObject(object);
-            
         } 
         else {
-            cursor* = object->next;
+            *cursor = object->next;
             freeObject(object);
         }
     }
