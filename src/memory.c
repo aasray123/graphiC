@@ -16,7 +16,7 @@ void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
         vm.bytesAllocatedTenure += newSize - oldSize;
     }
     else {
-    vm.bytesAllocated += newSize - oldSize;
+        vm.bytesAllocated += newSize - oldSize;
     }
 
     if (newSize > oldSize) {
@@ -184,7 +184,6 @@ static void sweep(bool isMajor) {
     vm.remSet.count = 0;
 
     Obj** cursor = &vm.objects;
-
     while (*cursor != NULL) {
         Obj* object = *cursor;
         if (object->isMarked) {
@@ -197,11 +196,6 @@ static void sweep(bool isMajor) {
             freeObject(object);
         }
     }
-
-    for (int i = 0; i < vm.remSet.count; i++) {
-        vm.remSet.objects[i]->isQueued = false;
-    }
-    vm.remSet.count = 0;
 
     if (isMajor) {
         cursor = &vm.tenureObjects;
@@ -262,10 +256,8 @@ void promoteObject(Obj* object) {
 
     vm.bytesAllocated -= size;
     vm.bytesAllocatedTenure += size;
-    
-    bool pointsToYoung = remSetChecker(object);
-    
 
+    bool pointsToYoung = remSetChecker(object);
     if (pointsToYoung && !object->isQueued) {
         appendRememberedSet(&vm.remSet, object);
     }
@@ -323,7 +315,7 @@ void collectGarbage(bool isMajor) {
         vm.nextGCTenure = vm.bytesAllocatedTenure * GC_HEAP_GROW_FACTOR;
     }
     else {
-    vm.nextGC = vm.bytesAllocated * GC_HEAP_GROW_FACTOR;
+        vm.nextGC = vm.bytesAllocated * GC_HEAP_GROW_FACTOR;
     }
 
     #ifdef DEBUG_LOG_GC
