@@ -54,17 +54,25 @@ static void freeObject(Obj* object){
         case OBJ_FUNCTION: {
             ObjFunction* function = (ObjFunction*)object;
             freeChunk(&function->chunk);
+
+            vm.freeingTenured = object->obj.isTenured;
             FREE(ObjFunction, object);
+            vm.freeingTenured = false;
             break;
         }
         case OBJ_NATIVE: {
+            vm.freeingTenured = object->obj.isTenured;
             FREE(ObjNative, object);
+            vm.freeingTenured = false;
             break;
         }
         case OBJ_STRING: {
             ObjString* string = (ObjString*)object;
             FREE_ARRAY(char, string->chars, string->length + 1);
+
+            vm.freeingTenured = object->obj.isTenured;
             FREE(ObjString, object);
+            vm.freeingTenured = false;
             break;
         }
     }
@@ -74,7 +82,9 @@ void freeObjects() {
     Obj* object = vm.objects;
     while (object != NULL) {
         Obj* next = object->next;
+        vm.freeingTenured = object->isTenured;
         freeObject(object);
+        vm.freeingTenured = false;
         object = next;
     }
 
