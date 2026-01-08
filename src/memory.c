@@ -321,7 +321,13 @@ void collectGarbage(bool isMajor) {
     tableRemoveWhite(&vm.strings, isMajor);
     sweep(isMajor);
 
+    if(isMajor) {
+        vm.nextGCTenure = vm.bytesAllocatedTenure * GC_HEAP_GROW_FACTOR;
+    }
+    else {
     vm.nextGC = vm.bytesAllocated * GC_HEAP_GROW_FACTOR;
+    }
+
     #ifdef DEBUG_LOG_GC
     printf("-- gc end\n");
 
