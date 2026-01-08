@@ -109,6 +109,8 @@ static void markArray(ValueArray* array, bool isMajor) {
     }
 }
 
+static void blackenObject(Obj* object, bool isMajor);
+
 static void markRoots(bool isMajor) {
     for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
         markValue(*slot, isMajor);
