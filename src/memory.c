@@ -159,6 +159,11 @@ static void traceReferences(bool isMajor) {
 bool remSetChecker(Obj* object);
 
 static void sweep(bool isMajor) {
+    for (int i = 0; i < vm.remSet.count; i++) {
+        vm.remSet.objects[i]->isQueued = false;
+    }
+    vm.remSet.count = 0;
+
     Obj** cursor = &vm.objects;
 
     while (*cursor != NULL) {
@@ -191,10 +196,21 @@ static void sweep(bool isMajor) {
                     appendRememberedSet(&vm.remSet, object);
                 }
                 cursor = &object->next;
-            } else {
+            } 
+            else {
                 *cursor = object->next;
                 freeObject(object);
             }
+        }
+    }
+    else{
+        cursor = &vm.tenureObjects;
+        while (*cursor != NULL){
+            Obj* object = *cursor;
+            if(remSetChecker(object)){
+                appendRememberedSet(&vm.remSet, object);
+            }
+            cursor = &object->next;
         }
     }
 }
