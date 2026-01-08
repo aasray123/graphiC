@@ -3,7 +3,7 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
-script.txt
+src/script.txt
 
 # User-specific files
 *.rsuser
