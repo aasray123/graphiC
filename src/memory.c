@@ -254,6 +254,17 @@ void promoteObject(Obj* object) {
     object->next = vm.tenureObjects;
     vm.tenureObjects = object;
     
+    size_t size = 0;
+    switch (object->type) {
+        case OBJ_FUNCTION: size = sizeof(ObjFunction); break;
+        case OBJ_NATIVE:   size = sizeof(ObjNative); break;
+        case OBJ_STRING:   size = sizeof(ObjString); break;
+        //TODO: STRUCT Add other types (OBJ_CLASS, OBJ_INSTANCE) here as you add them
+    }
+
+    vm.bytesAllocated -= size;
+    vm.bytesAllocatedTenure += size;
+    
     bool pointsToYoung = remSetChecker(object);
     
 
