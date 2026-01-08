@@ -12,7 +12,12 @@
 #endif
 
 void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
+    if (vm.freeingTenured){
+        vm.bytesAllocatedTenure += newSize - oldSize;
+    }
+    else {
     vm.bytesAllocated += newSize - oldSize;
+    }
 
     if (newSize > oldSize) {
         #ifdef DEBUG_STRESS_GC
@@ -20,9 +25,11 @@ void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
         #endif
 
         if(vm.bytesAllocatedTenure > vm.nextGCTenure){
+            vm.isMajor = true;
             collectGarbage(true);
         }
         else if (vm.bytesAllocated > vm.nextGC) {
+            vm.isMajor = false;
             collectGarbage(false);
         }
         
