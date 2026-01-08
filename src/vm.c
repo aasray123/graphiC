@@ -61,7 +61,7 @@ void initVM() {
     vm.nextGC = vm.nextGCTenure = 1024 * 1024;
 
     vm.bytesAllocatedTenure = 0;
-    
+    vm.freeingTenured = false;
 
     vm.grayCount = 0;
     vm.grayCapacity = 0;
