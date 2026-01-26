@@ -126,6 +126,10 @@ static bool callValue(Value callee, int argCount) {
     if (IS_OBJ(callee)) {
         //TODO: Struct
         switch (OBJ_TYPE(callee)) {
+            case OBJ_ENTITY:
+                ObjEntity* entity = AS_ENTITY(callee);
+                vm.stackTop[-argCount - 1] = C_TO_OBJ_VALUE(newInstance(entity));
+                return true;
             case OBJ_FUNCTION:
                 return call(AS_FUNCTION(callee), argCount);
             case OBJ_NATIVE:{
@@ -276,6 +280,38 @@ static InterpretResult run() {
                 }
                 break;
             }
+            case OP_SET_PROPERTY: {
+                if(!IS_INSTANCE(peek(1))) {
+                    runtimeError("Only instances have fields.");
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+
+                ObjInstance* instance = AS_INSTANCE(peek(1));
+                tableSet(&instance->fields, READ_STRING(), peek(0));
+
+                Value value = pop();
+                pop();
+                push(value);
+                break;
+            }
+            case OP_GET_PROPERTY: {
+                if(!IS_INSTANCE(peek(0))) {
+                    runtimeError("Only instances have properties.");
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+
+                ObjInstance* instance = AS_INSTANCE(peek(0));
+                ObjString* name = READ_STRING();
+
+                Value value;
+                if (tableGet(&instance->fields, name, &value)) {
+                    pop();
+                    push(value);
+                    break;
+                }
+                runtimeError("Undefined property '%s'.", name->chars);
+                return INTERPRET_RUNTIME_ERROR;
+            }
             case OP_EQUAL: {
                 Value b = pop();
                 Value a = pop();
@@ -356,6 +392,10 @@ static InterpretResult run() {
                     return INTERPRET_RUNTIME_ERROR;
                 }
                 frame = &vm.frames[vm.frameCount - 1];
+                break;
+            }
+            case OP_ENTITY: {
+                push(C_TO_OBJ_VALUE(newEntity(READ_STRING())));
                 break;
             }
             case OP_RETURN: {
