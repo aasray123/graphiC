@@ -800,6 +800,7 @@ static void functionDeclaration() {
 ---------------------------------------------------------------------------
 */
 
+
 static void markInitialized() {
     if(current->scopeDepth == 0) return;
     current->locals[current->localCount - 1].depth = current->scopeDepth;
@@ -949,7 +950,10 @@ static void varDeclaration() {
 
 
 static void declaration() {
-    if(match(TOKEN_FUNCTION)) {
+    if(match(TOKEN_ENTITY)) {
+        entityDeclaration();
+    }
+    else if(match(TOKEN_FUNCTION)) {
         functionDeclaration();
     }
 
