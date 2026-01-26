@@ -707,6 +707,7 @@ static void statement() {
 -------------------------FUNCTION DECLARATION STUFF------------------------
 ---------------------------------------------------------------------------
 */
+static void declareVariable();
 static void defineVariable(uint8_t global);
 
 static void function(FunctionType type) {
@@ -754,6 +755,20 @@ static uint8_t argumentList() {
     consume(TOKEN_RIGHT_PAREN, "Expect ')' after arguments.");
     return argCount;
 }
+
+static void entityDeclaration() {
+    consume(TOKEN_IDENTIFIER, "Expect entity name.");
+    uint8_t nameConstant = identifierConstant(&parser.previous);
+    declareVariable();
+
+    emitBytes(OP_ENTITY, nameConstant);
+    defineVariable(nameConstant);
+
+    consume(TOKEN_LEFT_BRACE, "Expect '{' before entity body.");
+    consume(TOKEN_RIGHT_BRACE, "Expect '}' after entity body.");
+    
+}
+
 //TODO: See if setup function works correctly
 static void functionDeclaration() {
     if (current->scopeDepth > 0) {
