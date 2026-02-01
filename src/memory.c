@@ -130,6 +130,12 @@ void markObject(Obj* object, bool isMajor) {
     vm.grayStack[vm.grayCount++] = object;
 }
 
+void markNatives(bool isMajor){
+    markObject((Obj*)vm.strVector2, isMajor);
+    markObject((Obj*)vm.strX, isMajor);
+    markObject((Obj*)vm.strY, isMajor);
+    markObject((Obj*)vm.vector2Entity, isMajor);
+}
 
 void markValue(Value value, bool isMajor) {
     if (IS_OBJ(value)) markObject(OBJ_VALUE_TO_C(value), isMajor);
@@ -145,6 +151,7 @@ static void markArray(ValueArray* array, bool isMajor) {
 static void blackenObject(Obj* object, bool isMajor);
 
 static void markRoots(bool isMajor) {
+    markNatives(isMajor);
     for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
         markValue(*slot, isMajor);
     }
@@ -265,10 +272,8 @@ void appendRememberedSet(RememberedSet* set, Obj* object) {
 }
 
 void promoteObject(Obj* object) {
-    if (object->isTenured) {
-        error("Object is already tenured.");
-        return;
-    }
+    if (object->isTenured) return;
+
     object->isTenured = true;
     object->next = vm.tenureObjects;
     vm.tenureObjects = object;
