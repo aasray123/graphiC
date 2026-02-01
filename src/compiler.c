@@ -350,6 +350,14 @@ static void dot(bool canAssign) {
     consume(TOKEN_IDENTIFIER, "Expect property name after '.'");
     uint8_t name = identifierConstant(&parser.previous);
 
+    if (canAssign && match(TOKEN_EQUAL)) {
+        expression();
+        emitBytes(OP_SET_PROPERTY, name);
+    }
+    else {
+        emitBytes(OP_GET_PROPERTY, name);
+    }
+
     //TODO: LOOK AT THE STRUCT VERSION
 
     // if(canAssign && match(TOKEN_EQUAL)) {
