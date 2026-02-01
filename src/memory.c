@@ -51,6 +51,20 @@ static void freeObject(Obj* object){
         printf("%p free type %d\n", (void*)object, object->type);
     #endif
     switch (object->type){
+        case OBJ_ENTITY: {
+            vm.freeingTenured = object->isTenured;
+            FREE(ObjEntity, object);
+            vm.freeingTenured = false;
+            break;
+        }
+        case OBJ_INSTANCE: {
+            ObjInstance* instance = (ObjInstance*)object;
+            freeTable(&instance->fields);
+            vm.freeingTenured = object->isTenured;
+            FREE(ObjInstance, object);
+            vm.freeingTenured = false;
+            break;
+        }
         case OBJ_FUNCTION: {
             ObjFunction* function = (ObjFunction*)object;
             freeChunk(&function->chunk);
@@ -102,6 +116,8 @@ void markObject(Obj* object, bool isMajor) {
     printValue(C_TO_OBJ_VALUE(object));
     printf("\n");
     #endif
+
+    
 
     object->isMarked = true;
     if (vm.grayCapacity < vm.grayCount + 1) {
@@ -156,6 +172,17 @@ static void blackenObject(Obj* object, bool isMajor) {
         printf("\n");
     #endif
     switch (object->type) {
+        case OBJ_ENTITY: {
+            ObjEntity* entity = (ObjEntity*)object;
+            markObject((Obj*)entity->name, isMajor);
+            break;
+        }
+        case OBJ_INSTANCE: {
+            ObjInstance* instance = (ObjInstance*)object;
+            markObject((Obj*)instance->entity, isMajor);
+            markTable(&instance->fields, isMajor);
+            break;
+        }
         case OBJ_FUNCTION: {
             ObjFunction* function = (ObjFunction*)object;
             markObject((Obj*)function->name, isMajor);
