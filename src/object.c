@@ -43,6 +43,19 @@ static ObjString* allocateString(char* chars, int length, uint32_t hash){
     return string;
 }
 
+ObjEntity* newEntity(ObjString* name) {
+    ObjEntity* entity = ALLOCATE_OBJ(ObjEntity, OBJ_ENTITY);
+    entity->name = name;
+    return entity;
+}
+
+ObjInstance* newInstance(ObjEntity* entity) {
+    ObjInstance* instance = ALLOCATE_OBJ(ObjInstance, OBJ_INSTANCE);
+    instance->entity = entity;
+    initTable(&instance->fields);
+    return instance;
+}
+
 ObjFunction* newFunction() {
     ObjFunction* function = ALLOCATE_OBJ(ObjFunction, OBJ_FUNCTION);
 
@@ -105,6 +118,12 @@ static void printFunction(ObjFunction* function) {
 
 void printObject(Value value){
     switch (OBJ_TYPE(value)){
+        case OBJ_ENTITY:
+            printf("%s", AS_ENTITY(value)->name->chars);
+            break;
+        case OBJ_INSTANCE:
+            printf("%s instance", AS_INSTANCE(value)->entity->name->chars);
+            break;
         case OBJ_FUNCTION:
             printFunction(AS_FUNCTION(value));
             break;
