@@ -6,6 +6,7 @@
 
 typedef enum {
     OP_RETURN, 
+    OP_ENTITY,
     OP_NEGATE, 
     OP_PRINT,
     OP_JUMP, 
@@ -32,6 +33,8 @@ typedef enum {
     OP_EQUAL,   
     OP_GREATER, 
     OP_LESS, 
+    OP_SET_PROPERTY,
+    OP_GET_PROPERTY
 }OpCode;
 /*
     1. Allocate a new array with more capacity.
