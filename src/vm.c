@@ -79,6 +79,13 @@ void initVM() {
 
     //TODO: NATIVE FUNCTION SETUP
     // defineNative("clock", clockNative);
+    vm.strX = copyString("x", 1);
+    vm.strY = copyString("y", 1);
+    vm.strVector2 = copyString("Vector2", 7);
+
+    vm.vector2Entity = newEntity(vm.strVector2);
+
+    defineNative("Vector2", nativeVector2);
 }
 
 void freeVM(){
