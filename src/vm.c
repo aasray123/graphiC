@@ -12,6 +12,10 @@
 
 VM vm;
 
+static Value clockNative(int argCount, Value* args) {
+    return C_TO_NUMBER_VALUE((double)clock() / CLOCKS_PER_SEC);
+}
+
 static void resetStack() {
     vm.stackTop = vm.stack;
     vm.frameCount = 0;
@@ -52,6 +56,18 @@ static void defineNative(const char* name, NativeFn function) {
     pop();
 }
 
+static void defineRaylibNatives() {
+    vm.strX = copyString("x", 1);
+    vm.strY = copyString("y", 1);
+    vm.strVector2 = copyString("Vector2", 7);
+
+    vm.vector2Entity = newEntity(vm.strVector2);
+
+    defineNative("Vector2", nativeVector2);
+    defineNative("InitWindow", nativeInitWindow);
+
+}
+
 void initVM() {
     resetStack();
 
@@ -77,15 +93,9 @@ void initVM() {
     vm.drawString = NULL;
     vm.drawString = copyString("draw", 4);
 
-    //TODO: NATIVE FUNCTION SETUP
-    // defineNative("clock", clockNative);
-    vm.strX = copyString("x", 1);
-    vm.strY = copyString("y", 1);
-    vm.strVector2 = copyString("Vector2", 7);
 
-    vm.vector2Entity = newEntity(vm.strVector2);
-
-    defineNative("Vector2", nativeVector2);
+    defineNative("clock", clockNative);
+    defineRaylibNatives();
 }
 
 void freeVM(){

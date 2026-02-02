@@ -10,6 +10,6 @@
 //VECTORS
 Value nativeVector2(int argCount, Value* args);
 Vector2 valueToVector2(Value value);
-
+Value nativeInitWindow(int argCount, Value* args);
 
 #endif

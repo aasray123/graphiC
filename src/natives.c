@@ -37,3 +37,15 @@ Vector2 valueToVector2(Value value){
 
     return vec;
 }
+
+Value nativeInitWindow(int argCount, Value* args){
+    if (argCount != 3) return C_TO_NULL_VALUE;
+
+    int width = (int)NUMBER_VALUE_TO_C(args[0]);
+    int height = (int)NUMBER_VALUE_TO_C(args[1]);
+    const char* title = AS_CSTRING(args[2]);
+
+    InitWindow(width, height, title);
+
+    return C_TO_NULL_VALUE;
+}
