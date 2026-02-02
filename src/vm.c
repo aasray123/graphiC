@@ -454,5 +454,7 @@ InterpretResult interpret(const char* source) {
             if(result != INTERPRET_OK) return result;
         }
     }
+    printf("%lld\n", vm.totalMinorTime);
+    printf("%lld\n", vm.totalMajorTime);
     return INTERPRET_OK;
 }

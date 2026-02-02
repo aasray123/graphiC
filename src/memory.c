@@ -12,6 +12,7 @@
 #endif
 
 void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
+    
     if (vm.freeingTenured){
         vm.bytesAllocatedTenure += newSize - oldSize;
     }
@@ -19,20 +20,41 @@ void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
         vm.bytesAllocated += newSize - oldSize;
     }
 
+
     if (newSize > oldSize) {
         #ifdef DEBUG_STRESS_GC
         collectGarbage(true);
         #endif
 
+        #ifdef DEBUG_LOG_TIME
+        bool isMajor;
+        struct timespec start, end;
+        clock_gettime(CLOCK_MONOTONIC, &start);
+        #endif
+
         if(vm.bytesAllocatedTenure > vm.nextGCTenure){
             vm.isMajor = true;
             collectGarbage(true);
+            #ifdef DEBUG_LOG_TIME
+            isMajor = true;
+            #endif
         }
         else if (vm.bytesAllocated > vm.nextGC) {
             vm.isMajor = false;
             collectGarbage(false);
+            #ifdef DEBUG_LOG_TIME
+            isMajor = false;
+            #endif
         }
-        
+        #ifdef DEBUG_LOG_TIME
+        clock_gettime(CLOCK_MONOTONIC, &end);
+        double elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
+        if (isMajor) {
+            vm.totalMajorTime += elapsed;
+        } else {
+            vm.totalMinorTime += elapsed;
+        }
+        #endif
     }
 
     if (newSize == 0) {

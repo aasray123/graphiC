@@ -8,6 +8,7 @@
 #include "object.h"
 #include "natives.h"
 #include "raylib.h"
+#include <time.h>
 
 #define FRAMES_MAX 64
 #define STACK_MAX (FRAMES_MAX * UINT8_COUNT)
@@ -33,6 +34,10 @@ typedef struct {
 
     size_t bytesAllocated;
     size_t nextGC;
+
+    //GC BENCHMARKING TIME STATS
+    time_t totalMinorTime;
+    time_t totalMajorTime;
         
     int grayCount;
     int grayCapacity;
