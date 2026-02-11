@@ -21,7 +21,7 @@ void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
     }
 
 
-    if (newSize > oldSize) {
+    if (newSize > oldSize && !vm.isGCing) {
         #ifdef DEBUG_STRESS_GC
         collectGarbage(true);
         #endif
@@ -31,7 +31,6 @@ void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
         clock_gettime(CLOCK_MONOTONIC, &start);
         #endif
 
-        
         if(vm.bytesAllocatedTenure > vm.nextGCTenure){
             vm.isMajor = true;
             collectGarbage(true);
@@ -344,6 +343,7 @@ bool remSetChecker(Obj* object){
             if (function->name != NULL && !function->name->obj.isTenured) {
                 return true;
             }
+            
             for (int i = 0; i < function->chunk.constants.count; i++) {
                 Value constant = function->chunk.constants.values[i];
                 if (IS_OBJ(constant)) {
@@ -393,6 +393,8 @@ void collectGarbage(bool isMajor) {
     size_t before = vm.bytesAllocated;
 
     #endif
+    if(vm.isGCing) return;
+    vm.isGCing = true;
 
     markRoots(isMajor);
     traceReferences(isMajor);
@@ -414,6 +416,7 @@ void collectGarbage(bool isMajor) {
             vm.nextGC);
 
     #endif
+    vm.isGCing = false;
 }
 
 
