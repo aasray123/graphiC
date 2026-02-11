@@ -89,6 +89,9 @@ void initVM() {
     vm.drawString = NULL;
     vm.drawString = copyString("draw", 4);
 
+    vm.totalMinorTime = 0;
+    vm.totalMajorTime = 0;
+
     vm.strX = copyString("x", 1);
     vm.strY = copyString("y", 1);
     vm.strVector2 = copyString("Vector2", 7);
@@ -307,6 +310,9 @@ static InterpretResult run() {
                 tableSet(&instance->fields, READ_STRING(), peek(0));
 
                 Value value = pop();
+
+                writeBarrier((Obj*)instance, value);
+
                 pop();
                 push(value);
                 break;
@@ -464,7 +470,7 @@ InterpretResult interpret(const char* source) {
             if(result != INTERPRET_OK) return result;
         }
     }
-    printf("%lld\n", vm.totalMinorTime);
-    printf("%lld\n", vm.totalMajorTime);
+    printf("%f\n", vm.totalMinorTime);
+    printf("%f\n", vm.totalMajorTime);
     return INTERPRET_OK;
 }

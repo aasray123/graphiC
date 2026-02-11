@@ -36,8 +36,8 @@ typedef struct {
     size_t nextGC;
 
     //GC BENCHMARKING TIME STATS
-    time_t totalMinorTime;
-    time_t totalMajorTime;
+    double totalMinorTime;
+    double totalMajorTime;
         
     int grayCount;
     int grayCapacity;
