@@ -6,9 +6,13 @@ Value nativeVector2(int argCount, Value* args){
 
     ObjInstance* instance = newInstance(vm.vector2Entity);
 
+    push(C_TO_OBJ_VALUE(instance));
+
     tableSet(&instance->fields, vm.strX, args[0]);
     tableSet(&instance->fields, vm.strY, args[1]);
 
+    pop();
+    
     return C_TO_OBJ_VALUE(instance);
 
 }
