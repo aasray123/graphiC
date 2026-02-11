@@ -45,6 +45,7 @@ typedef struct {
 
     //OLD objects
     bool isMajor;
+    bool isGCing;
     bool freeingTenured;
     RememberedSet remSet;
     Obj* tenureObjects;

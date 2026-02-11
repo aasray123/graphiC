@@ -71,6 +71,7 @@ void initVM() {
 
     vm.bytesAllocated = 0;
     vm.nextGC = vm.nextGCTenure = 1024 * 1024;
+    vm.isGCing = false;
 
     vm.bytesAllocatedTenure = 0;
     vm.freeingTenured = false;
@@ -470,7 +471,7 @@ InterpretResult interpret(const char* source) {
             if(result != INTERPRET_OK) return result;
         }
     }
-    printf("%f\n", vm.totalMinorTime);
-    printf("%f\n", vm.totalMajorTime);
+    printf("%f/%f\n", vm.totalMinorTime, vm.totalMajorTime);
+
     return INTERPRET_OK;
 }
