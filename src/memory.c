@@ -340,22 +340,6 @@ static bool tableHasYoungObject(Table* table){
 bool remSetChecker(Obj* object){
     switch(object->type) {
         case OBJ_FUNCTION: {
-            // ObjFunction* function = AS_FUNCTION(C_TO_OBJ_VALUE(object));
-            // //Name is ObjString*
-            // if (!function->name->obj.isTenured) {
-            //     return true;
-            // }
-            // for (int i = 0 ; i < function->chunk.constants.count; i++) {
-            //     Value constant = function->chunk.constants.values[i];
-            //     if (IS_OBJ(constant)) {
-            //         Obj* constObj = OBJ_VALUE_TO_C(constant);
-            //         if (!constObj->isTenured) {
-            //             return true;
-                        
-            //         }
-            //     }
-            // }
-            // return false;
             ObjFunction* function = (ObjFunction*)object;
             if (function->name != NULL && !function->name->obj.isTenured) {
                 return true;
