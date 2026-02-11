@@ -27,29 +27,24 @@ void* reallocate(void* pointer, size_t oldSize, size_t newSize) {
         #endif
 
         #ifdef DEBUG_LOG_TIME
-        bool isMajor;
         struct timespec start, end;
         clock_gettime(CLOCK_MONOTONIC, &start);
         #endif
 
+        
         if(vm.bytesAllocatedTenure > vm.nextGCTenure){
             vm.isMajor = true;
             collectGarbage(true);
-            #ifdef DEBUG_LOG_TIME
-            isMajor = true;
-            #endif
         }
         else if (vm.bytesAllocated > vm.nextGC) {
+            //TODO: REMEMBER THAT THIS IS TRUE FOR DEBUGS
             vm.isMajor = false;
             collectGarbage(false);
-            #ifdef DEBUG_LOG_TIME
-            isMajor = false;
-            #endif
         }
         #ifdef DEBUG_LOG_TIME
         clock_gettime(CLOCK_MONOTONIC, &end);
         double elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-        if (isMajor) {
+        if (vm.isMajor) {
             vm.totalMajorTime += elapsed;
         } else {
             vm.totalMinorTime += elapsed;
@@ -153,6 +148,7 @@ void markObject(Obj* object, bool isMajor) {
 }
 
 void markNatives(bool isMajor){
+    markObject((Obj*)vm.drawString, isMajor);
     markObject((Obj*)vm.strVector2, isMajor);
     markObject((Obj*)vm.strX, isMajor);
     markObject((Obj*)vm.strY, isMajor);
@@ -174,6 +170,7 @@ static void blackenObject(Obj* object, bool isMajor);
 
 static void markRoots(bool isMajor) {
     markNatives(isMajor);
+
     for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
         markValue(*slot, isMajor);
     }
@@ -305,7 +302,14 @@ void promoteObject(Obj* object) {
         case OBJ_FUNCTION: size = sizeof(ObjFunction); break;
         case OBJ_NATIVE:   size = sizeof(ObjNative); break;
         case OBJ_STRING:   size = sizeof(ObjString); break;
-        //TODO: STRUCT Add other types (OBJ_CLASS, OBJ_INSTANCE) here as you add them
+        case OBJ_ENTITY:   size = sizeof(ObjEntity); break;
+        case OBJ_INSTANCE: {
+            ObjInstance* instance = (ObjInstance*)object;
+            size += sizeof(ObjInstance);
+            
+            size += instance->fields.capacity * sizeof(Entry);
+            break;
+        }
     }
 
     vm.bytesAllocated -= size;
@@ -318,25 +322,71 @@ void promoteObject(Obj* object) {
 
 }
 
+static bool tableHasYoungObject(Table* table){
+    for(int i = 0; i < table->capacity; i++){
+        Entry* entry = &table->entries[i];
+
+        if(entry->key == NULL) continue;
+
+        if (IS_OBJ(entry->value)){
+            Obj* obj = OBJ_VALUE_TO_C(entry->value);
+            if(obj != NULL && !obj->isTenured){
+                return true;
+            }
+        }
+    }
+    return false;
+}
 bool remSetChecker(Obj* object){
     switch(object->type) {
         case OBJ_FUNCTION: {
-            ObjFunction* function = AS_FUNCTION(C_TO_OBJ_VALUE(object));
-            //Name is ObjString*
-            if (!function->name->obj.isTenured) {
+            // ObjFunction* function = AS_FUNCTION(C_TO_OBJ_VALUE(object));
+            // //Name is ObjString*
+            // if (!function->name->obj.isTenured) {
+            //     return true;
+            // }
+            // for (int i = 0 ; i < function->chunk.constants.count; i++) {
+            //     Value constant = function->chunk.constants.values[i];
+            //     if (IS_OBJ(constant)) {
+            //         Obj* constObj = OBJ_VALUE_TO_C(constant);
+            //         if (!constObj->isTenured) {
+            //             return true;
+                        
+            //         }
+            //     }
+            // }
+            // return false;
+            ObjFunction* function = (ObjFunction*)object;
+            if (function->name != NULL && !function->name->obj.isTenured) {
                 return true;
             }
-            for (int i = 0 ; i < function->chunk.constants.count; i++) {
+            for (int i = 0; i < function->chunk.constants.count; i++) {
                 Value constant = function->chunk.constants.values[i];
                 if (IS_OBJ(constant)) {
                     Obj* constObj = OBJ_VALUE_TO_C(constant);
                     if (!constObj->isTenured) {
                         return true;
-                        
                     }
                 }
             }
+            return false;
         }
+        case OBJ_ENTITY: {
+            ObjEntity* entity = (ObjEntity*)object;
+             if (!entity->name->obj.isTenured) return true;
+             return false;
+        }
+        case OBJ_INSTANCE: {
+            ObjInstance* instance = (ObjInstance*)object;
+            
+            // 1. If the Entity (class name) is young, we must remember it
+            if (!instance->entity->obj.isTenured) return true;
+            
+            // 2. Scan the fields (x, y) for young objects using the helper above
+            return tableHasYoungObject(&instance->fields);
+        }
+        case OBJ_NATIVE:
+        case OBJ_STRING:
         default:
             return false;
     }
