@@ -1,5 +1,9 @@
 define setup(){
-    define thisFunction(){
-        print("hello");
+    var i = 0;
+    while (i < 2000){
+        var temp = Vector2(i,i);
+        i = i + 1;
     }
 }
+
+

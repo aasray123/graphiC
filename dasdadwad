@@ -1,0 +1,27 @@
+[33m661f8ac[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: commit: Getting up to Date
+[33m144d08d[m HEAD@{1}: commit: Reset Point
+[33m2d8326b[m HEAD@{2}: commit: Cleaned up everything
+[33m376d467[m HEAD@{3}: commit: Setup and Draw more
+[33m05b6d39[m HEAD@{4}: commit: debug
+[33mca9a272[m HEAD@{5}: commit: File running
+[33mdce58c1[m HEAD@{6}: commit: draw loop
+[33m02030fd[m HEAD@{7}: commit: Redundancy
+[33mc71c94f[m HEAD@{8}: commit: Setup works
+[33m74e2ce9[m HEAD@{9}: commit: Allowed for setup to be defined
+[33ma06c9ce[m HEAD@{10}: reset: moving to a06c9ce2333e6fe763cd4e6eb12319dd204069b8
+[33ma06c9ce[m HEAD@{11}: commit: Reset point
+[33m4d11e3f[m HEAD@{12}: commit: current
+[33m29fccce[m HEAD@{13}: commit: Uncommented important functions
+[33mfba3ec2[m HEAD@{14}: commit: nil->null
+[33ma8ca3a5[m HEAD@{15}: commit: Table
+[33mfb66347[m HEAD@{16}: commit: main
+[33ma72323d[m HEAD@{17}: commit: Fixed cases
+[33m10583a0[m HEAD@{18}: commit: Compiler
+[33m4bb06ff[m HEAD@{19}: commit: Added OP_CODES
+[33m7bf3eac[m HEAD@{20}: commit: Updated Scanner
+[33m12919f3[m HEAD@{21}: commit: value
+[33ma05f1fe[m HEAD@{22}: commit: object
+[33mab137b5[m HEAD@{23}: commit: memory
+[33m6893cb1[m HEAD@{24}: commit: debug
+[33mc27ecfb[m HEAD@{25}: commit: Chunk
+[33m25d644e[m HEAD@{26}: commit (initial): First Commit
