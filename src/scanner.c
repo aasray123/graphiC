@@ -81,31 +81,64 @@ static Token errorToken(const char* message) {
 }
 
 static void skipWhitespace(){
-    for(;;){
+    // for(;;){
+    //     char c = peek();
+    //     switch(c) {
+    //         case ' ':
+    //         case '\r':
+    //         case '\t':
+    //             advance();
+    //             break;
+    //         case '\n':
+    //             scanner.line++;
+    //             advance();
+    //             break;
+    //         case '/':
+    //             printf("here:1\n");
+    //             if (peekNext() == '/') {
+    //                 printf("here:2\n");
+    //                 // A comment goes until the end of the line.
+    //                 while ((peek() != '\n' && peek() != '\r') && !isAtEnd()) {
+    //                     printf("here:3 Char:'%c' ASCII:%d\n", scanner.current[0], (int)scanner.current[0]);
+    //                     advance();
+    //                 }
+    //             }
+    //             else{
+    //                 return;
+    //             }
+    //         default:
+    //             return;
+    //     }
+    // }
+
+    for (;;) {
         char c = peek();
-        switch(c) {
-            case ' ':
-            case '\r':
-            case '\t':
-                advance();
-                break;
-            case '\n':
-                scanner.line++;
-                advance();
-                break;
-            case '/':
-                if (peekNext() == '/') {
-                    // A comment goes until the end of the line.
-                    while (peek() != '\n' && !isAtEnd()) advance();
-                }
-                else{
-                    return;
-                }
-            default:
-                return;
+        
+        // 1. Handle Standard Whitespace (Space, Tab, Carriage Return)
+        if (c == ' ' || c == '\r' || c == '\t') {
+            advance();
+        }
+        // 2. Handle Newlines
+        else if (c == '\n') {
+            scanner.line++;
+            advance();
+        }
+        // 3. Handle Comments (Starts with /)
+        else if (c == '/') {
+            if (peekNext() == '/') {
+                // A comment goes until the end of the line.
+                while (peek() != '\n' && !isAtEnd()) advance();
+            } else {
+                return; // It's just a division symbol, let scanToken handle it.
+            }
+        }
+        // 4. Not whitespace? We are done.
+        else {
+            return;
         }
     }
 }
+
 
 static TokenType checkKeyword(int start, int length, const char* rest, TokenType type){
     if(scanner.current - scanner.start == start + length &&
