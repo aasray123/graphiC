@@ -1,0 +1,24 @@
+define setup() {
+    // 1. Create a long-lived object (will become Tenured)
+    var holder = Vector2(0, 0);
+    
+    // Force a few collections to ensure 'holder' moves to Old Gen
+    var i = 0;
+    while (i < 10000) { var temp = Vector2(0,0); i = i + 1; }
+    
+    print "Holder is now (hopefully) Tenured.";
+
+    // 2. Repeatedly assign NEW (Young) objects to the OLD holder
+    i = 0;
+    while (i < 1000000) {
+        // 'val' is Young. 'holder' is Old.
+        // This assignment MUST trigger the Write Barrier!
+        holder.x = Vector2(i, i); 
+        
+        // Check if the pointer is still valid (GC shouldn't have killed it)
+        if (holder.x == null) { print "FAILURE: Write barrier missed!"; }
+        
+        i = i + 1;
+    }
+    print "Write Barrier stress test passed.";
+}

@@ -1,0 +1,17 @@
+define setup() {
+    var i = 0;
+
+    while (i < 10000) {
+        var a = Vector2(i, 0);
+        var b = Vector2(0, i);
+        
+
+        a.next = b;
+        b.prev = a;
+
+        a = null;
+        b = null;
+        
+        i = i + 1;
+    }
+}

@@ -1,0 +1,5 @@
+
+define setup(){
+    var pos = Vector2(100,200);
+}
+print pos.x;

@@ -1,0 +1,8 @@
+// sad
+define setup() {
+    var i = 0;
+    while (i < 50000) {
+        var temp = Vector2(i, i);
+        i = i + 1;
+    }
+}

@@ -1,0 +1,21 @@
+define setup() {
+
+    var head = Vector2(0, 0);
+    var current = head;
+    var i = 0;
+
+
+
+    while (i < 19000) {
+
+        var node = Vector2(i, i);
+
+        current.next = node;
+
+
+        current = node;
+
+        i = i + 1;
+    }
+
+}
