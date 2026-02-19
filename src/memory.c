@@ -290,6 +290,9 @@ void appendRememberedSet(RememberedSet* set, Obj* object) {
 }
 
 void promoteObject(Obj* object) {
+    #ifdef DEBUG_MINOR_GC
+    return;
+    #endif
     if (object->isTenured) return;
 
     object->isTenured = true;
@@ -395,6 +398,10 @@ void collectGarbage(bool isMajor) {
     #endif
     if(vm.isGCing) return;
     vm.isGCing = true;
+    
+    #ifdef DEBUG_MINOR_GC
+    isMajor = true;
+    #endif
 
     markRoots(isMajor);
     traceReferences(isMajor);
