@@ -6,7 +6,7 @@ define setup() {
 
 
 
-    while (i < 19000) {
+    while (i < 100000) {
 
         var node = Vector2(i, i);
 
