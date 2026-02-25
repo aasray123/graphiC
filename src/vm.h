@@ -58,6 +58,14 @@ typedef struct {
     ObjString* strX;
     ObjString* strY;
     ObjEntity* vector2Entity;
+
+    // COLOR STUFF
+    ObjString* strColor;
+    ObjString* strR;
+    ObjString* strG;
+    ObjString* strB;
+    ObjString* strA;
+    ObjEntity* colorEntity;
     /*
     
     */

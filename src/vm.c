@@ -1,6 +1,7 @@
 #include "common.h"
 #include "vm.h"
 #include "debug.h"
+#include "natives.h"
 #include "object.h"
 #include "memory.h"
 #include "compiler.h"
@@ -58,10 +59,15 @@ static void defineNative(const char* name, NativeFn function) {
 
 static void defineRaylibNatives() {
     
-
     defineNative("Vector2", nativeVector2);
     defineNative("InitWindow", nativeInitWindow);
+    defineNative("CloseWindow", nativeCloseWindow);
 
+    defineNative("Color", nativeColor);
+
+    defineNative("ClearBackground", NativeClearBackground);
+    defineNative("BeginDrawing", NativeBeginDrawing);
+    defineNative("EndDrawing", NativeEndDrawing);
 }
 
 void initVM() {
@@ -96,6 +102,14 @@ void initVM() {
     vm.strX = copyString("x", 1);
     vm.strY = copyString("y", 1);
     vm.strVector2 = copyString("Vector2", 7);
+
+    vm.strColor = copyString("Color", 5);
+    vm.strR = copyString("r", 1);
+    vm.strG = copyString("g", 1);
+    vm.strB = copyString("b", 1);
+    vm.strA = copyString("a", 1);
+    
+    vm.colorEntity = newEntity(vm.strColor);
 
     vm.vector2Entity = newEntity(vm.strVector2);
     defineNative("clock", clockNative);
