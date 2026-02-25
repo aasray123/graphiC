@@ -55,3 +55,88 @@ Value nativeInitWindow(int argCount, Value* args){
 
     return C_TO_NULL_VALUE;
 }
+
+
+Value nativeCloseWindow(int argCount, Value* args){
+   if (argCount != 0) return C_TO_NULL_VALUE;
+
+    CloseWindow();
+
+   return C_TO_NULL_VALUE;
+}
+
+
+Value nativeColor(int argCount, Value* args) {
+    if (argCount != 4) return C_TO_NULL_VALUE;
+
+    ObjInstance* instance = newInstance(vm.colorEntity);
+
+    // Anchor the instance so the GC doesn't free it during tableSet
+    push(C_TO_OBJ_VALUE(instance));
+
+    tableSet(&instance->fields, vm.strR, args[0]);
+    tableSet(&instance->fields, vm.strG, args[1]);
+    tableSet(&instance->fields, vm.strB, args[2]);
+    tableSet(&instance->fields, vm.strA, args[3]);
+
+    // Remove the anchor
+    pop();
+
+    return C_TO_OBJ_VALUE(instance);
+}
+
+Color valueToColor(Value value) {
+    // Default to Black (opaque) if the cast fails
+    if (!IS_INSTANCE(value)) return (Color){0, 0, 0, 255}; 
+    ObjInstance* instance = AS_INSTANCE(value);
+    
+    if (strcmp(instance->entity->name->chars, "Color") != 0) return (Color){0, 0, 0, 255};
+
+    Color color;
+    Value val;
+
+    // Raylib Colors use unsigned chars (0-255)
+    if (tableGet(&instance->fields, vm.strR, &val)) {
+        color.r = (unsigned char)NUMBER_VALUE_TO_C(val);
+    } else color.r = 0;
+
+    if (tableGet(&instance->fields, vm.strG, &val)) {
+        color.g = (unsigned char)NUMBER_VALUE_TO_C(val);
+    } else color.g = 0;
+
+    if (tableGet(&instance->fields, vm.strB, &val)) {
+        color.b = (unsigned char)NUMBER_VALUE_TO_C(val);
+    } else color.b = 0;
+
+    if (tableGet(&instance->fields, vm.strA, &val)) {
+        color.a = (unsigned char)NUMBER_VALUE_TO_C(val);
+    } else color.a = 255; // Default alpha to 255 (visible)
+
+    return color;
+}
+
+Value NativeClearBackground(int argCount, Value* args){
+    if(argCount != 1) return C_TO_NULL_VALUE;
+        
+	Color color = valueToColor(args[0]);
+
+	ClearBackground(color);
+
+	return C_TO_NULL_VALUE;
+}
+
+Value NativeBeginDrawing(int argCount, Value* args){
+    if(argCount != 0) return C_TO_NULL_VALUE;
+
+    BeginDrawing();
+
+    return C_TO_NULL_VALUE;
+}   
+
+Value NativeEndDrawing(int argCount, Value* args){
+    if(argCount != 0) return C_TO_NULL_VALUE;
+
+    EndDrawing();
+
+    return C_TO_NULL_VALUE;
+}
