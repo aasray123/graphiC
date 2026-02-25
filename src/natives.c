@@ -1,6 +1,8 @@
 
 #include "natives.h"
 
+#include "value.h"
+
 Value nativeVector2(int argCount, Value* args){
     if (argCount !=2) return C_TO_NULL_VALUE;
 

@@ -504,7 +504,7 @@ ParseRule rules[] = {
   [TOKEN_LESS_EQUAL]    = {NULL,     binary,  PREC_COMPARISON},
   // Literals
   [TOKEN_IDENTIFIER]    = {variable, NULL,    PREC_NONE},
-  [TOKEN_STRING]        = {string,   NULL,    PREC_NONE},
+  [TOKEN_STRING]        = {(void(*)(bool))string,   NULL,    PREC_NONE},
   [TOKEN_NUMBER]        = {number,   NULL,    PREC_NONE},
   // Keywords
   [TOKEN_AND]           = {NULL,     and_,    PREC_AND},

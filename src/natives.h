@@ -2,10 +2,11 @@
 #define graphiC_natives_h
 
 #include "value.h"
-#include "common.h"
-#include "object.h"
 #include "vm.h"
 #include "raylib.h"
+#include "memory.h"
+#include "common.h"
+#include "chunk.h"
 
 //VECTORS
 Value nativeVector2(int argCount, Value* args);
