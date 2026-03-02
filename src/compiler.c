@@ -145,12 +145,72 @@ static void initCompiler(Compiler* compiler, FunctionType type) {
     }
 }
 
+static int getInstructionLength(uint8_t instruction) {
+    switch (instruction) {
+
+        case OP_RETURN: case OP_NEGATE: case OP_ADD: 
+        case OP_SUBTRACT: case OP_MULTIPLY: case OP_DIVIDE: 
+        case OP_NOT: case OP_EQUAL: case OP_GREATER: 
+        case OP_LESS: case OP_POP:
+            return 1;
+            
+
+        case OP_CONSTANT: case OP_GET_GLOBAL: case OP_SET_GLOBAL:
+        case OP_GET_LOCAL: case OP_SET_LOCAL: case OP_GET_PROPERTY:
+        case OP_SET_PROPERTY: case OP_ENTITY: // Your custom opcode
+            return 2;
+            
+      
+        case OP_JUMP: case OP_JUMP_IF_FALSE: case OP_LOOP:
+            return 3;
+            
+        default:
+            return 1; 
+    }
+}
+
+static void optimizeJumps(Chunk* chunk) {
+    int i = 0;
+    while (i < chunk->count) {
+        uint8_t instruction = chunk->code[i];
+
+        if (instruction == OP_JUMP || instruction == OP_JUMP_IF_FALSE) {
+
+            int offset = (chunk->code[i + 1] << 8) | chunk->code[i + 2];
+            int destIndex = i + 3 + offset;
+
+
+            while (destIndex < chunk->count && chunk->code[destIndex] == OP_JUMP) {
+                int nextOffset = (chunk->code[destIndex + 1] << 8) | chunk->code[destIndex + 2];
+                int finalDest = destIndex + 3 + nextOffset;
+
+                int newOffset = finalDest - i - 3;
+
+                // Prevent 16-bit overflow
+                if (newOffset > UINT16_MAX) break;
+
+
+                chunk->code[i + 1] = (newOffset >> 8) & 0xff;
+                chunk->code[i + 2] = newOffset & 0xff;
+
+
+                destIndex = finalDest; 
+            }
+        }
+        
+
+        i += getInstructionLength(instruction);
+    }
+}
+
 static ObjFunction* endCompiler(){
     emitReturn();
     ObjFunction* function = current->function; 
 
     #ifdef DEBUG_PRINT_CODE
         if (!parser.hadError) {
+            optimizeJumps(&function->chunk);
+
             disassembleChunk(currentChunk(), function->name != NULL ? 
                                         function->name->chars : "<script>");
         }
@@ -298,9 +358,18 @@ static void patchJump(int offset) {
     if (jump > UINT16_MAX) {
         error("Too much code to jump over.");
     }
+    
 
     currentChunk()->code[offset] = (jump >> 8) & 0xff;
     currentChunk()->code[offset + 1] = jump & 0xff;
+
+
+    /*
+    Offset = 2 placeholder bytes for the original jump
+    urrentChunk()->count = current size of the chunk and where being jumped to
+    jump = length to get from the og jump to the current place
+    currentChunk()->code[offset] = bytes being overwritten
+    */
 }
 
 /*
