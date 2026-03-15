@@ -164,3 +164,25 @@ Value NativeMouseY(int argCount, Value* args){
 
     return C_TO_NUMBER_VALUE(GetMouseY());
 }
+
+Value NativeGetMousePosition(int argCount, Value* args){
+    if (argCount != 0) return C_TO_NULL_VALUE;
+
+    // Call the Raylib function
+    Vector2 mousePos = GetMousePosition();
+
+    // Create a new graphiC Vector2 instance
+    ObjInstance* instance = newInstance(vm.vector2Entity);
+
+    // Anchor the instance to protect it from the GC during tableSet
+    push(C_TO_OBJ_VALUE(instance));
+
+    // Convert the C floats to VM Number Values and set the fields
+    tableSet(&instance->fields, vm.strX, C_TO_NUMBER_VALUE(mousePos.x));
+    tableSet(&instance->fields, vm.strY, C_TO_NUMBER_VALUE(mousePos.y));
+
+    // Remove the GC anchor
+    pop();
+
+    return C_TO_OBJ_VALUE(instance);
+}

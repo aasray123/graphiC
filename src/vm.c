@@ -73,6 +73,7 @@ static void defineRaylibNatives() {
 
     defineNative("MouseX", NativeMouseX);
     defineNative("MouseY", NativeMouseY);
+    defineNative("MousePos", NativeGetMousePosition);
 }
     
 void initVM() {

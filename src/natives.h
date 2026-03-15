@@ -23,5 +23,5 @@ Value NativeDrawCircle(int argCount, Value* args);
 
 Value NativeMouseX(int argCount, Value* args);
 Value NativeMouseY(int argCount, Value* args);
-
+Value NativeGetMousePosition(int argCount, Value* args);
 #endif
