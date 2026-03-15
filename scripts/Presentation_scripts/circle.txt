@@ -1,12 +1,17 @@
 define setup(){
-    InitWindow(200,200,"Hello");    
+    InitWindow(800,800,"Hello");    
+    var background = Color(255,255,255,255);
+    
     var myVector = Vector2(40,40);
     var myColor = Color(255,0,0,255);
+    
 }
 
 define draw(){
     BeginDrawing();
-    
+    BackgroundColor(background);
+    myVector.x = MouseX();
+    myVector.y = MouseY();
     Circle(myVector, 30, myColor);
     EndDrawing();
 }
