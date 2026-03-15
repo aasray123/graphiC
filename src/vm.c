@@ -474,7 +474,7 @@ InterpretResult interpret(const char* source) {
 
     Value drawValue;
     if (tableGet(&vm.globals, vm.drawString, &drawValue)) {
-        while(true) {
+        while(!WindowShouldClose()) {
             vm.stackTop = vm.stack;
             push(drawValue);
             if(!callValue(drawValue, 0)) {
