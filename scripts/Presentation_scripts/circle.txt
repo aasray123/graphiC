@@ -1,0 +1,12 @@
+define setup(){
+    InitWindow(200,200,"Hello");    
+    var myVector = Vector2(40,40);
+    var myColor = Color(255,0,0,255);
+}
+
+define draw(){
+    BeginDrawing();
+    
+    Circle(myVector, 30, myColor);
+    EndDrawing();
+}
