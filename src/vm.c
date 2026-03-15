@@ -68,6 +68,8 @@ static void defineRaylibNatives() {
     defineNative("ClearBackground", NativeClearBackground);
     defineNative("BeginDrawing", NativeBeginDrawing);
     defineNative("EndDrawing", NativeEndDrawing);
+
+    defineNative("Circle", NativeDrawCircle);
 }
 
 void initVM() {

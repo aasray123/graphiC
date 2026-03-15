@@ -19,6 +19,6 @@ Color valueToColor(Value value);
 Value NativeClearBackground(int argCount, Value* args);
 Value NativeBeginDrawing(int argCount, Value* args);                
 Value NativeEndDrawing(int argCount, Value* args);                    
-
+Value NativeDrawCircle(int argCount, Value* args);
 
 #endif
