@@ -21,4 +21,7 @@ Value NativeBeginDrawing(int argCount, Value* args);
 Value NativeEndDrawing(int argCount, Value* args);                    
 Value NativeDrawCircle(int argCount, Value* args);
 
+Value NativeMouseX(int argCount, Value* args);
+Value NativeMouseY(int argCount, Value* args);
+
 #endif

@@ -65,13 +65,16 @@ static void defineRaylibNatives() {
 
     defineNative("Color", nativeColor);
 
-    defineNative("ClearBackground", NativeClearBackground);
+    defineNative("BackgroundColor", NativeClearBackground);
     defineNative("BeginDrawing", NativeBeginDrawing);
     defineNative("EndDrawing", NativeEndDrawing);
 
     defineNative("Circle", NativeDrawCircle);
-}
 
+    defineNative("MouseX", NativeMouseX);
+    defineNative("MouseY", NativeMouseY);
+}
+    
 void initVM() {
     resetStack();
 

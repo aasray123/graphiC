@@ -144,16 +144,6 @@ Value NativeEndDrawing(int argCount, Value* args){
 Value NativeDrawCircle(int argCount, Value* args){
     if (argCount != 3) return C_TO_NULL_VALUE;
 
-    //     if (argCount != 3) return C_TO_NULL_VALUE;
-
-    // int width = (int)NUMBER_VALUE_TO_C(args[0]);
-    // int height = (int)NUMBER_VALUE_TO_C(args[1]);
-    // const char* title = AS_CSTRING(args[2]);
-
-    // InitWindow(width, height, title);
-
-    // return C_TO_NULL_VALUE;
-
     Vector2 vector2 = valueToVector2(args[0]);
     float radius = NUMBER_VALUE_TO_C(args[1]);
     Color color = valueToColor(args[2]);
@@ -161,4 +151,16 @@ Value NativeDrawCircle(int argCount, Value* args){
     DrawCircleV(vector2, radius, color);
     // void DrawCircleV(Vector2 center, float radius, Color color);   
     return C_TO_NULL_VALUE;
+}
+
+Value NativeMouseX(int argCount, Value* args){
+    if(argCount != 0 ) return C_TO_NULL_VALUE;
+
+    return C_TO_NUMBER_VALUE(GetMouseX());
+}
+
+Value NativeMouseY(int argCount, Value* args){
+    if(argCount != 0) return C_TO_NULL_VALUE;
+
+    return C_TO_NUMBER_VALUE(GetMouseY());
 }
