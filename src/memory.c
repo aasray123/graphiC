@@ -152,6 +152,14 @@ void markNatives(bool isMajor){
     markObject((Obj*)vm.strX, isMajor);
     markObject((Obj*)vm.strY, isMajor);
     markObject((Obj*)vm.vector2Entity, isMajor);
+
+    markObject((Obj*)vm.strColor, isMajor);
+    markObject((Obj*)vm.strR, isMajor);
+    markObject((Obj*)vm.strG, isMajor);
+    markObject((Obj*)vm.strB, isMajor);
+    markObject((Obj*)vm.strA, isMajor);
+    markObject((Obj*)vm.colorEntity, isMajor);
+
 }
 
 void markValue(Value value, bool isMajor) {
