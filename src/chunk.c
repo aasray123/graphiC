@@ -22,7 +22,7 @@ void freeChunk(Chunk* chunk){
 
 
 void writeChunk(Chunk* chunk, uint8_t byte, int line) {
-  // 1. Check if the array has enough capacity.
+  //Check if the array has enough capacity.
   if (chunk->capacity < chunk->count + 1) {
     int oldCapacity = chunk->capacity;
     chunk->capacity = GROW_CAPACITY(oldCapacity);
@@ -30,7 +30,7 @@ void writeChunk(Chunk* chunk, uint8_t byte, int line) {
     chunk->lines = GROW_ARRAY(int, chunk->lines, oldCapacity, chunk->capacity);
   }
 
-  // 2. Add the new byte and line number to the end of the arrays.
+  //Add the new byte and line number to the end of the arrays.
   chunk->code[chunk->count] = byte;
   chunk->lines[chunk->count] = line;
   chunk->count++;

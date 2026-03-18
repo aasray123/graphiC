@@ -12,884 +12,893 @@ heap_tree=empty
 #-----------
 snapshot=1
 #-----------
-time=12117246
-mem_heap_B=1049468
-mem_heap_extra_B=108780
+time=18075693
+mem_heap_B=1124748
+mem_heap_extra_B=109252
 mem_stacks_B=0
 heap_tree=peak
-n2: 1049468 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
- n3: 1048394 0x115D30: reallocate (memory.c:59)
-  n1: 865920 0x117EDD: adjustCapacity (table.c:61)
-   n2: 865920 0x1180C1: tableSet (table.c:86)
-    n1: 864768 0x1169F7: nativeVector2 (natives.c:11)
-     n1: 864768 0x118F67: callValue (vm.c:158)
-      n1: 864768 0x11A1DD: run (vm.c:415)
-       n1: 864768 0x11A3FA: interpret (vm.c:458)
-        n1: 864768 0x115AE3: runFile (main.c:59)
-         n0: 864768 0x115B5D: main (main.c:73)
-    n0: 1152 in 3 places, all below massif's threshold (1.00%)
-  n2: 180960 0x116CBD: allocateObject (object.c:15)
-   n1: 180200 0x116E40: newInstance (object.c:53)
-    n1: 180200 0x11699C: nativeVector2 (natives.c:7)
-     n1: 180200 0x118F67: callValue (vm.c:158)
-      n1: 180200 0x11A1DD: run (vm.c:415)
-       n1: 180200 0x11A3FA: interpret (vm.c:458)
-        n1: 180200 0x115AE3: runFile (main.c:59)
-         n0: 180200 0x115B5D: main (main.c:73)
-   n0: 760 in 4 places, all below massif's threshold (1.00%)
-  n0: 1514 in 4 places, all below massif's threshold (1.00%)
- n0: 1074 in 4 places, all below massif's threshold (1.00%)
+n3: 1124748 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 1048546 0x400D83F: reallocate (memory.c:59)
+  n1: 865536 0x40102E6: adjustCapacity (table.c:61)
+   n2: 865536 0x40104C8: tableSet (table.c:86)
+    n1: 863232 0x400E575: nativeVector2 (natives.c:13)
+     n1: 863232 0x401145F: callValue (vm.c:178)
+      n1: 863232 0x4012851: run (vm.c:435)
+       n1: 863232 0x4012A78: interpret (vm.c:478)
+        n1: 863232 0x400D5FD: runFile (main.c:59)
+         n0: 863232 0x400D673: main (main.c:73)
+    n0: 2304 in 3 places, all below massif's threshold (1.00%)
+  n2: 181400 0x400EFE3: allocateObject (object.c:15)
+   n1: 179880 0x400F13F: newInstance (object.c:53)
+    n1: 179880 0x400E525: nativeVector2 (natives.c:9)
+     n1: 179880 0x401145F: callValue (vm.c:178)
+      n1: 179880 0x4012851: run (vm.c:435)
+       n1: 179880 0x4012A78: interpret (vm.c:478)
+        n1: 179880 0x400D5FD: runFile (main.c:59)
+         n0: 179880 0x400D673: main (main.c:73)
+   n0: 1520 in 4 places, all below massif's threshold (1.00%)
+  n0: 1610 in 4 places, all below massif's threshold (1.00%)
+ n1: 73728 0x4C94B03: pool (eh_alloc.cc:235)
+  n1: 73728 0x4C94B03: __static_initialization_and_destruction_0 (eh_alloc.cc:373)
+   n1: 73728 0x4C94B03: _GLOBAL__sub_I_eh_alloc.cc (eh_alloc.cc:456)
+    n1: 73728 0x41FE2A6: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+     n1: 73728 0x41FE37C: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+      n1: 73728 0x4216C9F: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+       n1: 73728 0x1: ???
+        n1: 73728 0x1FFF0003A6: ???
+         n0: 73728 0x1FFF0003BA: ???
+ n0: 2474 in 7 places, all below massif's threshold (1.00%)
 #-----------
 snapshot=2
 #-----------
-time=56989190
-mem_heap_B=831716
-mem_heap_extra_B=86188
+time=70232069
+mem_heap_B=875348
+mem_heap_extra_B=83468
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=3
 #-----------
-time=136165311
-mem_heap_B=18788
-mem_heap_extra_B=2060
+time=144120683
+mem_heap_B=243844
+mem_heap_extra_B=18140
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=4
 #-----------
-time=192868666
-mem_heap_B=78876
-mem_heap_extra_B=8276
+time=205808447
+mem_heap_B=89332
+mem_heap_extra_B=2156
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=5
 #-----------
-time=276328250
-mem_heap_B=627788
-mem_heap_extra_B=65092
+time=292251965
+mem_heap_B=98380
+mem_heap_extra_B=3092
 mem_stacks_B=0
-heap_tree=detailed
-n2: 627788 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
- n3: 625690 0x115D30: reallocate (memory.c:59)
-  n1: 516096 0x117EDD: adjustCapacity (table.c:61)
-   n2: 516096 0x1180C1: tableSet (table.c:86)
-    n1: 514944 0x1169F7: nativeVector2 (natives.c:11)
-     n1: 514944 0x118F67: callValue (vm.c:158)
-      n1: 514944 0x11A1DD: run (vm.c:415)
-       n1: 514944 0x11A3FA: interpret (vm.c:458)
-        n1: 514944 0x115AE3: runFile (main.c:59)
-         n0: 514944 0x115B5D: main (main.c:73)
-    n0: 1152 in 3 places, all below massif's threshold (1.00%)
-  n2: 108080 0x116CBD: allocateObject (object.c:15)
-   n1: 107320 0x116E40: newInstance (object.c:53)
-    n1: 107320 0x11699C: nativeVector2 (natives.c:7)
-     n1: 107320 0x118F67: callValue (vm.c:158)
-      n1: 107320 0x11A1DD: run (vm.c:415)
-       n1: 107320 0x11A3FA: interpret (vm.c:458)
-        n1: 107320 0x115AE3: runFile (main.c:59)
-         n0: 107320 0x115B5D: main (main.c:73)
-   n0: 760 in 4 places, all below massif's threshold (1.00%)
-  n0: 1514 in 4 places, all below massif's threshold (1.00%)
- n0: 2098 in 4 places, all below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=6
 #-----------
-time=341187326
-mem_heap_B=78644
-mem_heap_extra_B=8252
+time=360052532
+mem_heap_B=257532
+mem_heap_extra_B=19572
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=7
 #-----------
-time=377220258
-mem_heap_B=19020
-mem_heap_extra_B=2084
+time=444132338
+mem_heap_B=154060
+mem_heap_extra_B=8852
 mem_stacks_B=0
-heap_tree=empty
+heap_tree=detailed
+n3: 154060 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 77858 0x400D83F: reallocate (memory.c:59)
+  n1: 62208 0x40102E6: adjustCapacity (table.c:61)
+   n2: 62208 0x40104C8: tableSet (table.c:86)
+    n1: 59904 0x400E575: nativeVector2 (natives.c:13)
+     n1: 59904 0x401145F: callValue (vm.c:178)
+      n1: 59904 0x4012851: run (vm.c:435)
+       n1: 59904 0x4012A78: interpret (vm.c:478)
+        n1: 59904 0x400D5FD: runFile (main.c:59)
+         n0: 59904 0x400D673: main (main.c:73)
+    n0: 2304 in 3 places, all below massif's threshold (1.00%)
+  n2: 14040 0x400EFE3: allocateObject (object.c:15)
+   n1: 12520 0x400F13F: newInstance (object.c:53)
+    n1: 12520 0x400E525: nativeVector2 (natives.c:9)
+     n1: 12520 0x401145F: callValue (vm.c:178)
+      n1: 12520 0x4012851: run (vm.c:435)
+       n1: 12520 0x4012A78: interpret (vm.c:478)
+        n1: 12520 0x400D5FD: runFile (main.c:59)
+         n0: 12520 0x400D673: main (main.c:73)
+   n0: 1520 in 4 places, all below massif's threshold (1.00%)
+  n0: 1610 in 4 places, all below massif's threshold (1.00%)
+ n1: 73728 0x4C94B03: pool (eh_alloc.cc:235)
+  n1: 73728 0x4C94B03: __static_initialization_and_destruction_0 (eh_alloc.cc:373)
+   n1: 73728 0x4C94B03: _GLOBAL__sub_I_eh_alloc.cc (eh_alloc.cc:456)
+    n1: 73728 0x41FE2A6: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+     n1: 73728 0x41FE37C: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+      n1: 73728 0x4216C9F: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+       n1: 73728 0x1: ???
+        n1: 73728 0x1FFF0003A6: ???
+         n0: 73728 0x1FFF0003BA: ???
+ n0: 2474 in 7 places, all below massif's threshold (1.00%)
 #-----------
 snapshot=8
 #-----------
-time=434870771
-mem_heap_B=144764
-mem_heap_extra_B=15124
+time=508426280
+mem_heap_B=141300
+mem_heap_extra_B=7580
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=9
 #-----------
-time=473971707
-mem_heap_B=269348
-mem_heap_extra_B=28012
+time=557881571
+mem_heap_B=466796
+mem_heap_extra_B=41236
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=10
 #-----------
-time=543900419
-mem_heap_B=31316
-mem_heap_extra_B=3388
+time=649431401
+mem_heap_B=749140
+mem_heap_extra_B=70460
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=11
 #-----------
-time=584690499
-mem_heap_B=258908
-mem_heap_extra_B=27012
+time=707689640
+mem_heap_B=438260
+mem_heap_extra_B=38268
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=12
 #-----------
-time=654621907
-mem_heap_B=26908
-mem_heap_extra_B=2948
+time=790919342
+mem_heap_B=307412
+mem_heap_extra_B=24732
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=13
 #-----------
-time=712901098
-mem_heap_B=200908
-mem_heap_extra_B=20996
+time=857496464
+mem_heap_B=421556
+mem_heap_extra_B=36540
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=14
 #-----------
-time=798329958
-mem_heap_B=893892
-mem_heap_extra_B=92684
+time=940720202
+mem_heap_B=297204
+mem_heap_extra_B=23708
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=15
 #-----------
-time=863212058
-mem_heap_B=373516
-mem_heap_extra_B=38852
+time=1007302043
+mem_heap_B=416684
+mem_heap_extra_B=36036
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=16
 #-----------
-time=899260418
-mem_heap_B=328508
-mem_heap_extra_B=34196
+time=1048920548
+mem_heap_B=357756
+mem_heap_extra_B=29972
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=17
 #-----------
-time=971354570
-mem_heap_B=241276
-mem_heap_extra_B=25172
+time=1123831742
+mem_heap_B=901332
+mem_heap_extra_B=86236
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=18
 #-----------
-time=1043445298
-mem_heap_B=157756
-mem_heap_extra_B=16500
+time=1173780143
+mem_heap_B=187004
+mem_heap_extra_B=12308
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=19
 #-----------
-time=1108325131
-mem_heap_B=738220
-mem_heap_extra_B=76580
+time=1240377935
+mem_heap_B=315300
+mem_heap_extra_B=25564
 mem_stacks_B=0
-heap_tree=detailed
-n2: 738220 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
- n3: 736122 0x115D30: reallocate (memory.c:59)
-  n1: 607488 0x117EDD: adjustCapacity (table.c:61)
-   n2: 607488 0x1180C1: tableSet (table.c:86)
-    n1: 606336 0x1169F7: nativeVector2 (natives.c:11)
-     n1: 606336 0x118F67: callValue (vm.c:158)
-      n1: 606336 0x11A1DD: run (vm.c:415)
-       n1: 606336 0x11A3FA: interpret (vm.c:458)
-        n1: 606336 0x115AE3: runFile (main.c:59)
-         n0: 606336 0x115B5D: main (main.c:73)
-    n0: 1152 in 3 places, all below massif's threshold (1.00%)
-  n2: 127120 0x116CBD: allocateObject (object.c:15)
-   n1: 126360 0x116E40: newInstance (object.c:53)
-    n1: 126360 0x11699C: nativeVector2 (natives.c:7)
-     n1: 126360 0x118F67: callValue (vm.c:158)
-      n1: 126360 0x11A1DD: run (vm.c:415)
-       n1: 126360 0x11A3FA: interpret (vm.c:458)
-        n1: 126360 0x115AE3: runFile (main.c:59)
-         n0: 126360 0x115B5D: main (main.c:73)
-   n0: 760 in 4 places, all below massif's threshold (1.00%)
-  n0: 1514 in 4 places, all below massif's threshold (1.00%)
- n0: 2098 in 4 places, all below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=20
 #-----------
-time=1180386371
-mem_heap_B=659804
-mem_heap_extra_B=68468
+time=1306973810
+mem_heap_B=445684
+mem_heap_extra_B=39036
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=21
 #-----------
-time=1238032774
-mem_heap_B=816868
-mem_heap_extra_B=84716
+time=1348595543
+mem_heap_B=393716
+mem_heap_extra_B=33676
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=22
 #-----------
-time=1295677528
-mem_heap_B=976212
-mem_heap_extra_B=101188
+time=1418161835
+mem_heap_B=677684
+mem_heap_extra_B=63052
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=23
 #-----------
-time=1353334715
-mem_heap_B=54052
-mem_heap_extra_B=5788
+time=1501997669
+mem_heap_B=609476
+mem_heap_extra_B=56028
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=24
 #-----------
-time=1410986446
-mem_heap_B=218772
-mem_heap_extra_B=22844
+time=1585830095
+mem_heap_B=544980
+mem_heap_extra_B=49356
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=25
 #-----------
-time=1454223490
-mem_heap_B=614332
-mem_heap_extra_B=63812
+time=1641725450
+mem_heap_B=146868
+mem_heap_extra_B=8156
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=26
 #-----------
-time=1526284130
-mem_heap_B=554476
-mem_heap_extra_B=57604
+time=1711595324
+mem_heap_B=456356
+mem_heap_extra_B=40204
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=27
 #-----------
-time=1583930083
-mem_heap_B=725460
-mem_heap_extra_B=75244
+time=1781463281
+mem_heap_B=767932
+mem_heap_extra_B=72404
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=28
 #-----------
-time=1627163507
-mem_heap_B=44964
-mem_heap_extra_B=4820
+time=1865303015
+mem_heap_B=716428
+mem_heap_extra_B=67076
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=29
 #-----------
-time=1684820995
-mem_heap_B=220860
-mem_heap_extra_B=23060
+time=1949139341
+mem_heap_B=668636
+mem_heap_extra_B=62132
 mem_stacks_B=0
-heap_tree=detailed
-n2: 220860 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
- n3: 218762 0x115D30: reallocate (memory.c:59)
-  n1: 179328 0x117EDD: adjustCapacity (table.c:61)
-   n2: 179328 0x1180C1: tableSet (table.c:86)
-    n1: 178176 0x1169F7: nativeVector2 (natives.c:11)
-     n1: 178176 0x118F67: callValue (vm.c:158)
-      n1: 178176 0x11A1DD: run (vm.c:415)
-       n1: 178176 0x11A3FA: interpret (vm.c:458)
-        n1: 178176 0x115AE3: runFile (main.c:59)
-         n0: 178176 0x115B5D: main (main.c:73)
-    n0: 1152 in 3 places, all below massif's threshold (1.00%)
-  n2: 37920 0x116CBD: allocateObject (object.c:15)
-   n1: 37160 0x116E40: newInstance (object.c:53)
-    n1: 37160 0x11699C: nativeVector2 (natives.c:7)
-     n1: 37160 0x118F67: callValue (vm.c:158)
-      n1: 37160 0x11A1DD: run (vm.c:415)
-       n1: 37160 0x11A3FA: interpret (vm.c:458)
-        n1: 37160 0x115AE3: runFile (main.c:59)
-         n0: 37160 0x115B5D: main (main.c:73)
-   n0: 760 in 4 places, all below massif's threshold (1.00%)
-  n0: 1514 in 4 places, all below massif's threshold (1.00%)
- n0: 2098 in 4 places, all below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=30
 #-----------
-time=1728059451
-mem_heap_B=623844
-mem_heap_extra_B=64764
+time=2032972259
+mem_heap_B=624556
+mem_heap_extra_B=57588
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=31
 #-----------
-time=1800122915
-mem_heap_B=578836
-mem_heap_extra_B=60092
+time=2088867983
+mem_heap_B=241756
+mem_heap_extra_B=18004
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=32
 #-----------
-time=1852261174
-mem_heap_B=434532
-mem_heap_extra_B=45164
+time=2163058466
+mem_heap_B=784636
+mem_heap_extra_B=74132
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=33
 #-----------
-time=1898887034
-mem_heap_B=1042604
-mem_heap_extra_B=108068
+time=2212517762
+mem_heap_B=634572
+mem_heap_extra_B=58604
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=34
 #-----------
-time=1968824238
-mem_heap_B=880436
-mem_heap_extra_B=91308
+time=2286716393
+mem_heap_B=628964
+mem_heap_extra_B=58012
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=35
 #-----------
-time=2062072831
-mem_heap_B=1028452
-mem_heap_extra_B=106620
+time=2336182286
+mem_heap_B=995292
+mem_heap_extra_B=95924
 mem_stacks_B=0
-heap_tree=detailed
-n2: 1028452 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
- n3: 1026354 0x115D30: reallocate (memory.c:59)
-  n1: 847680 0x117EDD: adjustCapacity (table.c:61)
-   n2: 847680 0x1180C1: tableSet (table.c:86)
-    n1: 846528 0x1169F7: nativeVector2 (natives.c:11)
-     n1: 846528 0x118F67: callValue (vm.c:158)
-      n1: 846528 0x11A1DD: run (vm.c:415)
-       n1: 846528 0x11A3FA: interpret (vm.c:458)
-        n1: 846528 0x115AE3: runFile (main.c:59)
-         n0: 846528 0x115B5D: main (main.c:73)
-    n0: 1152 in 3 places, all below massif's threshold (1.00%)
-  n2: 177160 0x116CBD: allocateObject (object.c:15)
-   n1: 176400 0x116E40: newInstance (object.c:53)
-    n1: 176400 0x11699C: nativeVector2 (natives.c:7)
-     n1: 176400 0x118F67: callValue (vm.c:158)
-      n1: 176400 0x11A1DD: run (vm.c:415)
-       n1: 176400 0x11A3FA: interpret (vm.c:458)
-        n1: 176400 0x115AE3: runFile (main.c:59)
-         n0: 176400 0x115B5D: main (main.c:73)
-   n0: 760 in 4 places, all below massif's threshold (1.00%)
-  n0: 1514 in 4 places, all below massif's threshold (1.00%)
- n0: 2098 in 4 places, all below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=36
 #-----------
-time=2108700122
-mem_heap_B=567932
-mem_heap_extra_B=58980
+time=2435107619
+mem_heap_B=666548
+mem_heap_extra_B=61900
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=37
 #-----------
-time=2178638802
-mem_heap_B=417596
-mem_heap_extra_B=43412
+time=2534032223
+mem_heap_B=343836
+mem_heap_extra_B=28532
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=38
 #-----------
-time=2225264790
-mem_heap_B=1034484
-mem_heap_extra_B=107228
+time=2632952933
+mem_heap_B=1088556
+mem_heap_extra_B=105572
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=39
 #-----------
-time=2295202250
-mem_heap_B=889948
-mem_heap_extra_B=92292
-mem_stacks_B=0
-heap_tree=detailed
-n2: 889948 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
- n3: 887850 0x115D30: reallocate (memory.c:59)
-  n1: 733056 0x117EDD: adjustCapacity (table.c:61)
-   n2: 733056 0x1180C1: tableSet (table.c:86)
-    n1: 731904 0x1169F7: nativeVector2 (natives.c:11)
-     n1: 731904 0x118F67: callValue (vm.c:158)
-      n1: 731904 0x11A1DD: run (vm.c:415)
-       n1: 731904 0x11A3FA: interpret (vm.c:458)
-        n1: 731904 0x115AE3: runFile (main.c:59)
-         n0: 731904 0x115B5D: main (main.c:73)
-    n0: 1152 in 3 places, all below massif's threshold (1.00%)
-  n2: 153280 0x116CBD: allocateObject (object.c:15)
-   n1: 152520 0x116E40: newInstance (object.c:53)
-    n1: 152520 0x11699C: nativeVector2 (natives.c:7)
-     n1: 152520 0x118F67: callValue (vm.c:158)
-      n1: 152520 0x11A1DD: run (vm.c:415)
-       n1: 152520 0x11A3FA: interpret (vm.c:458)
-        n1: 152520 0x115AE3: runFile (main.c:59)
-         n0: 152520 0x115B5D: main (main.c:73)
-   n0: 760 in 4 places, all below massif's threshold (1.00%)
-  n0: 1514 in 4 places, all below massif's threshold (1.00%)
- n0: 2098 in 4 places, all below massif's threshold (1.00%)
-#-----------
-snapshot=40
-#-----------
-time=2388447879
-mem_heap_B=883220
-mem_heap_extra_B=91548
+time=2707148351
+mem_heap_B=589060
+mem_heap_extra_B=53884
 mem_stacks_B=0
 heap_tree=empty
 #-----------
+snapshot=40
+#-----------
+time=2756614916
+mem_heap_B=965132
+mem_heap_extra_B=92804
+mem_stacks_B=0
+heap_tree=detailed
+n3: 965132 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 888930 0x400D83F: reallocate (memory.c:59)
+  n1: 733440 0x40102E6: adjustCapacity (table.c:61)
+   n2: 733440 0x40104C8: tableSet (table.c:86)
+    n1: 731136 0x400E575: nativeVector2 (natives.c:13)
+     n1: 731136 0x401145F: callValue (vm.c:178)
+      n1: 731136 0x4012851: run (vm.c:435)
+       n1: 731136 0x4012A78: interpret (vm.c:478)
+        n1: 731136 0x400D5FD: runFile (main.c:59)
+         n0: 731136 0x400D673: main (main.c:73)
+    n0: 2304 in 3 places, all below massif's threshold (1.00%)
+  n2: 153880 0x400EFE3: allocateObject (object.c:15)
+   n1: 152360 0x400F13F: newInstance (object.c:53)
+    n1: 152360 0x400E525: nativeVector2 (natives.c:9)
+     n1: 152360 0x401145F: callValue (vm.c:178)
+      n1: 152360 0x4012851: run (vm.c:435)
+       n1: 152360 0x4012A78: interpret (vm.c:478)
+        n1: 152360 0x400D5FD: runFile (main.c:59)
+         n0: 152360 0x400D673: main (main.c:73)
+   n0: 1520 in 4 places, all below massif's threshold (1.00%)
+  n0: 1610 in 4 places, all below massif's threshold (1.00%)
+ n1: 73728 0x4C94B03: pool (eh_alloc.cc:235)
+  n1: 73728 0x4C94B03: __static_initialization_and_destruction_0 (eh_alloc.cc:373)
+   n1: 73728 0x4C94B03: _GLOBAL__sub_I_eh_alloc.cc (eh_alloc.cc:456)
+    n1: 73728 0x41FE2A6: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+     n1: 73728 0x41FE37C: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+      n1: 73728 0x4216C9F: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+       n1: 73728 0x1: ???
+        n1: 73728 0x1FFF0003A6: ???
+         n0: 73728 0x1FFF0003BA: ???
+ n0: 2474 in 7 places, all below massif's threshold (1.00%)
+#-----------
 snapshot=41
 #-----------
-time=2435074730
-mem_heap_B=612476
-mem_heap_extra_B=63572
+time=2830809818
+mem_heap_B=471436
+mem_heap_extra_B=41732
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=42
 #-----------
-time=2505013666
-mem_heap_B=479772
-mem_heap_extra_B=49844
+time=2880273827
+mem_heap_B=850292
+mem_heap_extra_B=80940
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=43
 #-----------
-time=2598265403
-mem_heap_B=664676
-mem_heap_extra_B=68972
+time=2979199046
+mem_heap_B=553100
+mem_heap_extra_B=50180
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=44
 #-----------
-time=2691512067
-mem_heap_B=855572
-mem_heap_extra_B=88708
+time=3078119204
+mem_heap_B=261900
+mem_heap_extra_B=20028
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=45
 #-----------
-time=2738140107
-mem_heap_B=420612
-mem_heap_extra_B=43708
+time=3127582433
+mem_heap_B=646364
+mem_heap_extra_B=59828
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=46
 #-----------
-time=2808080155
-mem_heap_B=304612
-mem_heap_extra_B=31708
+time=3177049670
+mem_heap_B=1032180
+mem_heap_extra_B=99756
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=47
 #-----------
-time=2854706827
-mem_heap_B=938668
-mem_heap_extra_B=97284
+time=3226513256
+mem_heap_B=364020
+mem_heap_extra_B=30652
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=48
 #-----------
-time=2901333282
-mem_heap_B=510396
-mem_heap_extra_B=53028
+time=3275978363
+mem_heap_B=752156
+mem_heap_extra_B=70772
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=49
 #-----------
-time=2994581059
-mem_heap_B=721980
-mem_heap_extra_B=74884
+time=3325440137
+mem_heap_B=777484
+mem_heap_extra_B=73420
 mem_stacks_B=0
-heap_tree=detailed
-n2: 721980 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
- n3: 719882 0x115D30: reallocate (memory.c:59)
-  n1: 594048 0x117EDD: adjustCapacity (table.c:61)
-   n2: 594048 0x1180C1: tableSet (table.c:86)
-    n1: 592896 0x1169F7: nativeVector2 (natives.c:11)
-     n1: 592896 0x118F67: callValue (vm.c:158)
-      n1: 592896 0x11A1DD: run (vm.c:415)
-       n1: 592896 0x11A3FA: interpret (vm.c:458)
-        n1: 592896 0x115AE3: runFile (main.c:59)
-         n0: 592896 0x115B5D: main (main.c:73)
-    n0: 1152 in 3 places, all below massif's threshold (1.00%)
-  n2: 124320 0x116CBD: allocateObject (object.c:15)
-   n1: 123560 0x116E40: newInstance (object.c:53)
-    n1: 123560 0x11699C: nativeVector2 (natives.c:7)
-     n1: 123560 0x118F67: callValue (vm.c:158)
-      n1: 123560 0x11A1DD: run (vm.c:415)
-       n1: 123560 0x11A3FA: interpret (vm.c:458)
-        n1: 123560 0x115AE3: runFile (main.c:59)
-         n0: 123560 0x115B5D: main (main.c:73)
-   n0: 760 in 4 places, all below massif's threshold (1.00%)
-  n0: 1514 in 4 places, all below massif's threshold (1.00%)
- n0: 2098 in 4 places, all below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=50
 #-----------
-time=3030614587
-mem_heap_B=733348
-mem_heap_extra_B=76044
+time=3367058682
+mem_heap_B=907132
+mem_heap_extra_B=86820
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=51
 #-----------
-time=3066647536
-mem_heap_B=745836
-mem_heap_extra_B=77340
+time=3408677204
+mem_heap_B=1015748
+mem_heap_extra_B=98084
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=52
 #-----------
-time=3102682991
-mem_heap_B=759100
-mem_heap_extra_B=78708
+time=3450295745
+mem_heap_B=1103444
+mem_heap_extra_B=107140
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=53
 #-----------
-time=3138717867
-mem_heap_B=773484
-mem_heap_extra_B=80196
+time=3491914490
+mem_heap_B=1123084
+mem_heap_extra_B=109132
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=54
 #-----------
-time=3174751887
-mem_heap_B=788796
-mem_heap_extra_B=81796
+time=3533533445
+mem_heap_B=1120804
+mem_heap_extra_B=108940
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=55
 #-----------
-time=3210785051
-mem_heap_B=805036
-mem_heap_extra_B=83476
+time=3575152076
+mem_heap_B=1119836
+mem_heap_extra_B=108828
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=56
 #-----------
-time=3246821275
-mem_heap_B=822436
-mem_heap_extra_B=85292
+time=3616773923
+mem_heap_B=1119644
+mem_heap_extra_B=108836
 mem_stacks_B=0
-heap_tree=empty
+heap_tree=detailed
+n3: 1119644 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 1043442 0x400D83F: reallocate (memory.c:59)
+  n1: 861312 0x40102E6: adjustCapacity (table.c:61)
+   n2: 861312 0x40104C8: tableSet (table.c:86)
+    n1: 859008 0x400E575: nativeVector2 (natives.c:13)
+     n1: 859008 0x401145F: callValue (vm.c:178)
+      n1: 859008 0x4012851: run (vm.c:435)
+       n1: 859008 0x4012A78: interpret (vm.c:478)
+        n1: 859008 0x400D5FD: runFile (main.c:59)
+         n0: 859008 0x400D673: main (main.c:73)
+    n0: 2304 in 3 places, all below massif's threshold (1.00%)
+  n2: 180520 0x400EFE3: allocateObject (object.c:15)
+   n1: 179000 0x400F13F: newInstance (object.c:53)
+    n1: 179000 0x400E525: nativeVector2 (natives.c:9)
+     n1: 179000 0x401145F: callValue (vm.c:178)
+      n1: 179000 0x4012851: run (vm.c:435)
+       n1: 179000 0x4012A78: interpret (vm.c:478)
+        n1: 179000 0x400D5FD: runFile (main.c:59)
+         n0: 179000 0x400D673: main (main.c:73)
+   n0: 1520 in 4 places, all below massif's threshold (1.00%)
+  n0: 1610 in 4 places, all below massif's threshold (1.00%)
+ n1: 73728 0x4C94B03: pool (eh_alloc.cc:235)
+  n1: 73728 0x4C94B03: __static_initialization_and_destruction_0 (eh_alloc.cc:373)
+   n1: 73728 0x4C94B03: _GLOBAL__sub_I_eh_alloc.cc (eh_alloc.cc:456)
+    n1: 73728 0x41FE2A6: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+     n1: 73728 0x41FE37C: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+      n1: 73728 0x4216C9F: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+       n1: 73728 0x1: ???
+        n1: 73728 0x1FFF0003A6: ???
+         n0: 73728 0x1FFF0003BA: ???
+ n0: 2474 in 7 places, all below massif's threshold (1.00%)
 #-----------
 snapshot=57
 #-----------
-time=3282856643
-mem_heap_B=840764
-mem_heap_extra_B=87156
+time=3658395182
+mem_heap_B=1120572
+mem_heap_extra_B=108900
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=58
 #-----------
-time=3318891155
-mem_heap_B=860020
-mem_heap_extra_B=89164
+time=3700015589
+mem_heap_B=1122428
+mem_heap_extra_B=109108
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=59
 #-----------
-time=3354924811
-mem_heap_B=880204
-mem_heap_extra_B=91236
+time=3741634121
+mem_heap_B=1121308
+mem_heap_extra_B=108988
 mem_stacks_B=0
-heap_tree=detailed
-n2: 880204 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
- n3: 878106 0x115D30: reallocate (memory.c:59)
-  n1: 724992 0x117EDD: adjustCapacity (table.c:61)
-   n2: 724992 0x1180C1: tableSet (table.c:86)
-    n1: 723840 0x1169F7: nativeVector2 (natives.c:11)
-     n1: 723840 0x118F67: callValue (vm.c:158)
-      n1: 723840 0x11A1DD: run (vm.c:415)
-       n1: 723840 0x11A3FA: interpret (vm.c:458)
-        n1: 723840 0x115AE3: runFile (main.c:59)
-         n0: 723840 0x115B5D: main (main.c:73)
-    n0: 1152 in 3 places, all below massif's threshold (1.00%)
-  n2: 151600 0x116CBD: allocateObject (object.c:15)
-   n1: 150840 0x116E40: newInstance (object.c:53)
-    n1: 150840 0x11699C: nativeVector2 (natives.c:7)
-     n1: 150840 0x118F67: callValue (vm.c:158)
-      n1: 150840 0x11A1DD: run (vm.c:415)
-       n1: 150840 0x11A3FA: interpret (vm.c:458)
-        n1: 150840 0x115AE3: runFile (main.c:59)
-         n0: 150840 0x115B5D: main (main.c:73)
-   n0: 760 in 4 places, all below massif's threshold (1.00%)
-  n0: 1514 in 4 places, all below massif's threshold (1.00%)
- n0: 2098 in 4 places, all below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=60
 #-----------
-time=3390957888
-mem_heap_B=901508
-mem_heap_extra_B=93444
+time=3783252645
+mem_heap_B=1041460
+mem_heap_extra_B=100732
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=61
 #-----------
-time=3426993471
-mem_heap_B=923588
-mem_heap_extra_B=95724
+time=3824871231
+mem_heap_B=940540
+mem_heap_extra_B=90276
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=62
 #-----------
-time=3463028475
-mem_heap_B=946788
-mem_heap_extra_B=98124
+time=3866489751
+mem_heap_B=818740
+mem_heap_extra_B=77644
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=63
 #-----------
-time=3499062623
-mem_heap_B=970916
-mem_heap_extra_B=100652
+time=3908108333
+mem_heap_B=675868
+mem_heap_extra_B=62908
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=64
 #-----------
-time=3535095915
-mem_heap_B=995972
-mem_heap_extra_B=103228
+time=3949726934
+mem_heap_B=512076
+mem_heap_extra_B=45964
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=65
 #-----------
-time=3571132267
-mem_heap_B=1022188
-mem_heap_extra_B=105940
+time=3991345469
+mem_heap_B=327404
+mem_heap_extra_B=26876
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=66
 #-----------
-time=3607167763
-mem_heap_B=1049332
-mem_heap_extra_B=108732
+time=4032964643
+mem_heap_B=126220
+mem_heap_extra_B=5988
 mem_stacks_B=0
-heap_tree=empty
+heap_tree=detailed
+n3: 126220 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 73728 0x4C94B03: pool (eh_alloc.cc:235)
+  n1: 73728 0x4C94B03: __static_initialization_and_destruction_0 (eh_alloc.cc:373)
+   n1: 73728 0x4C94B03: _GLOBAL__sub_I_eh_alloc.cc (eh_alloc.cc:456)
+    n1: 73728 0x41FE2A6: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+     n1: 73728 0x41FE37C: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+      n1: 73728 0x4216C9F: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+       n1: 73728 0x1: ???
+        n1: 73728 0x1FFF0003A6: ???
+         n0: 73728 0x1FFF0003BA: ???
+ n3: 50018 0x400D83F: reallocate (memory.c:59)
+  n1: 39168 0x40102E6: adjustCapacity (table.c:61)
+   n3: 39168 0x40104C8: tableSet (table.c:86)
+    n1: 36864 0x400E575: nativeVector2 (natives.c:13)
+     n1: 36864 0x401145F: callValue (vm.c:178)
+      n1: 36864 0x4012851: run (vm.c:435)
+       n1: 36864 0x4012A78: interpret (vm.c:478)
+        n1: 36864 0x400D5FD: runFile (main.c:59)
+         n0: 36864 0x400D673: main (main.c:73)
+    n1: 1536 0x400F0D7: allocateString (object.c:40)
+     n2: 1536 0x400F354: copyString (object.c:108)
+      n1: 1536 0x400B962: string (compiler.c:509)
+       n1: 1536 0x400B5B7: parsePrecedence (compiler.c:405)
+        n1: 1536 0x400BAE8: expression (compiler.c:604)
+         n1: 1536 0x400BDC9: printStatement (compiler.c:714)
+          n1: 1536 0x400BF16: statement (compiler.c:758)
+           n1: 1536 0x400C97E: declaration (compiler.c:1048)
+            n1: 1536 0x400BAFB: block (compiler.c:610)
+             n1: 1536 0x400BFA8: statement (compiler.c:774)
+              n1: 1536 0x400BD75: ifStatement (compiler.c:703)
+               n1: 1536 0x400BF33: statement (compiler.c:761)
+                n1: 1536 0x400C97E: declaration (compiler.c:1048)
+                 n1: 1536 0x400BAFB: block (compiler.c:610)
+                  n1: 1536 0x400BFA8: statement (compiler.c:774)
+                   n1: 1536 0x400BED9: whileStatement (compiler.c:748)
+                    n1: 1536 0x400BF84: statement (compiler.c:770)
+                     n1: 1536 0x400C97E: declaration (compiler.c:1048)
+                      n1: 1536 0x400BAFB: block (compiler.c:610)
+                       n1: 1536 0x400C0C6: function (compiler.c:812)
+                        n1: 1536 0x400C2BE: functionDeclaration (compiler.c:861)
+                         n1: 1536 0x400C8F3: declaration (compiler.c:1034)
+                          n1: 1536 0x400C9FE: compile (compiler.c:1072)
+                           n1: 1536 0x4012A1D: interpret (vm.c:472)
+                            n1: 1536 0x400D5FD: runFile (main.c:59)
+                             n0: 1536 0x400D673: main (main.c:73)
+      n0: 0 in 3 places, all below massif's threshold (1.00%)
+    n0: 768 in 2 places, all below massif's threshold (1.00%)
+  n2: 9240 0x400EFE3: allocateObject (object.c:15)
+   n1: 7720 0x400F13F: newInstance (object.c:53)
+    n1: 7720 0x400E525: nativeVector2 (natives.c:9)
+     n1: 7720 0x401145F: callValue (vm.c:178)
+      n1: 7720 0x4012851: run (vm.c:435)
+       n1: 7720 0x4012A78: interpret (vm.c:478)
+        n1: 7720 0x400D5FD: runFile (main.c:59)
+         n0: 7720 0x400D673: main (main.c:73)
+   n0: 1520 in 4 places, all below massif's threshold (1.00%)
+  n0: 1610 in 4 places, all below massif's threshold (1.00%)
+ n0: 2474 in 7 places, all below massif's threshold (1.00%)
 #-----------
 snapshot=67
 #-----------
-time=3643200739
-mem_heap_B=563060
-mem_heap_extra_B=58444
+time=4074586148
+mem_heap_B=137356
+mem_heap_extra_B=7156
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=68
 #-----------
-time=3679235242
-mem_heap_B=53820
-mem_heap_extra_B=5668
+time=4116206801
+mem_heap_B=149420
+mem_heap_extra_B=8404
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=69
 #-----------
-time=3715271658
-mem_heap_B=84444
-mem_heap_extra_B=8916
+time=4157826602
+mem_heap_B=162412
+mem_heap_extra_B=9748
 mem_stacks_B=0
-heap_tree=detailed
-n3: 84444 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
- n3: 82346 0x115D30: reallocate (memory.c:59)
-  n1: 66432 0x117EDD: adjustCapacity (table.c:61)
-   n2: 66432 0x1180C1: tableSet (table.c:86)
-    n1: 65280 0x1169F7: nativeVector2 (natives.c:11)
-     n1: 65280 0x118F67: callValue (vm.c:158)
-      n1: 65280 0x11A1DD: run (vm.c:415)
-       n1: 65280 0x11A3FA: interpret (vm.c:458)
-        n1: 65280 0x115AE3: runFile (main.c:59)
-         n0: 65280 0x115B5D: main (main.c:73)
-    n0: 1152 in 3 places, all below massif's threshold (1.00%)
-  n2: 14400 0x116CBD: allocateObject (object.c:15)
-   n1: 13640 0x116E40: newInstance (object.c:53)
-    n1: 13640 0x11699C: nativeVector2 (natives.c:7)
-     n1: 13640 0x118F67: callValue (vm.c:158)
-      n1: 13640 0x11A1DD: run (vm.c:415)
-       n1: 13640 0x11A3FA: interpret (vm.c:458)
-        n1: 13640 0x115AE3: runFile (main.c:59)
-         n0: 13640 0x115B5D: main (main.c:73)
-   n0: 760 in 4 places, all below massif's threshold (1.00%)
-  n0: 1514 in 4 places, all below massif's threshold (1.00%)
- n0: 1074 in 3 places, all below massif's threshold (1.00%)
- n1: 1024 0x49CA1B4: _IO_file_doallocate (filedoalloc.c:101)
-  n2: 1024 0x49DA523: _IO_doallocbuf (genops.c:347)
-   n1: 1024 0x49D7F8F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
-    n1: 1024 0x49D8AAE: _IO_new_file_xsputn (fileops.c:1244)
-     n1: 1024 0x49D8AAE: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
-      n1: 1024 0x49A5CC8: __printf_buffer_flush_to_file (printf_buffer_to_file.c:59)
-       n1: 1024 0x49A5CC8: __printf_buffer_to_file_done (printf_buffer_to_file.c:120)
-        n1: 1024 0x49B0742: __vfprintf_internal (vfprintf-internal.c:1545)
-         n1: 1024 0x49A51B2: printf (printf.c:33)
-          n1: 1024 0x1171A9: printObject (object.c:134)
-           n1: 1024 0x11864B: printValue (value.c:37)
-            n1: 1024 0x119FE7: run (vm.c:394)
-             n1: 1024 0x11A3FA: interpret (vm.c:458)
-              n1: 1024 0x115AE3: runFile (main.c:59)
-               n0: 1024 0x115B5D: main (main.c:73)
-   n0: 0 in 1 place, below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=70
 #-----------
-time=3751307218
-mem_heap_B=115996
-mem_heap_extra_B=12180
+time=4199445551
+mem_heap_B=176332
+mem_heap_extra_B=11188
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=71
 #-----------
-time=3787341922
-mem_heap_B=148476
-mem_heap_extra_B=15524
+time=4241068244
+mem_heap_B=191412
+mem_heap_extra_B=12748
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=72
 #-----------
-time=3823375770
-mem_heap_B=181884
-mem_heap_extra_B=18980
+time=4282690085
+mem_heap_B=207420
+mem_heap_extra_B=14420
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=73
 #-----------
-time=3859408762
-mem_heap_B=216220
-mem_heap_extra_B=22548
+time=4324311074
+mem_heap_B=224356
+mem_heap_extra_B=16172
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=74
 #-----------
-time=3895444814
-mem_heap_B=251716
-mem_heap_extra_B=26220
+time=4365931211
+mem_heap_B=242220
+mem_heap_extra_B=18004
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=75
 #-----------
-time=3931480010
-mem_heap_B=288140
-mem_heap_extra_B=30004
+time=4407550496
+mem_heap_B=261012
+mem_heap_extra_B=19948
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=76
 #-----------
-time=3967514350
-mem_heap_B=325492
-mem_heap_extra_B=33868
+time=4449169193
+mem_heap_B=280924
+mem_heap_extra_B=21996
 mem_stacks_B=0
-heap_tree=empty
+heap_tree=detailed
+n3: 280924 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n3: 204722 0x400D83F: reallocate (memory.c:59)
+  n1: 167232 0x40102E6: adjustCapacity (table.c:61)
+   n2: 167232 0x40104C8: tableSet (table.c:86)
+    n1: 164928 0x400E575: nativeVector2 (natives.c:13)
+     n1: 164928 0x401145F: callValue (vm.c:178)
+      n1: 164928 0x4012851: run (vm.c:435)
+       n1: 164928 0x4012A78: interpret (vm.c:478)
+        n1: 164928 0x400D5FD: runFile (main.c:59)
+         n0: 164928 0x400D673: main (main.c:73)
+    n0: 2304 in 3 places, all below massif's threshold (1.00%)
+  n2: 35880 0x400EFE3: allocateObject (object.c:15)
+   n1: 34360 0x400F13F: newInstance (object.c:53)
+    n1: 34360 0x400E525: nativeVector2 (natives.c:9)
+     n1: 34360 0x401145F: callValue (vm.c:178)
+      n1: 34360 0x4012851: run (vm.c:435)
+       n1: 34360 0x4012A78: interpret (vm.c:478)
+        n1: 34360 0x400D5FD: runFile (main.c:59)
+         n0: 34360 0x400D673: main (main.c:73)
+   n0: 1520 in 4 places, all below massif's threshold (1.00%)
+  n0: 1610 in 4 places, all below massif's threshold (1.00%)
+ n1: 73728 0x4C94B03: pool (eh_alloc.cc:235)
+  n1: 73728 0x4C94B03: __static_initialization_and_destruction_0 (eh_alloc.cc:373)
+   n1: 73728 0x4C94B03: _GLOBAL__sub_I_eh_alloc.cc (eh_alloc.cc:456)
+    n1: 73728 0x41FE2A6: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+     n1: 73728 0x41FE37C: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+      n1: 73728 0x4216C9F: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+       n1: 73728 0x1: ???
+        n1: 73728 0x1FFF0003A6: ???
+         n0: 73728 0x1FFF0003BA: ???
+ n0: 2474 in 7 places, all below massif's threshold (1.00%)
 #-----------
 snapshot=77
 #-----------
-time=4003547834
-mem_heap_B=363772
-mem_heap_extra_B=37812
+time=4490791106
+mem_heap_B=301612
+mem_heap_extra_B=24148
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=78
 #-----------
-time=4039584378
-mem_heap_B=403212
-mem_heap_extra_B=41924
+time=4532412431
+mem_heap_B=323420
+mem_heap_extra_B=26404
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=79
 #-----------
-time=4075620066
-mem_heap_B=443580
-mem_heap_extra_B=46100
+time=4574032904
+mem_heap_B=346156
+mem_heap_extra_B=28772
 mem_stacks_B=0
-heap_tree=detailed
-n2: 443580 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
- n3: 441482 0x115D30: reallocate (memory.c:59)
-  n1: 363648 0x117EDD: adjustCapacity (table.c:61)
-   n2: 363648 0x1180C1: tableSet (table.c:86)
-    n1: 362496 0x1169F7: nativeVector2 (natives.c:11)
-     n1: 362496 0x118F67: callValue (vm.c:158)
-      n1: 362496 0x11A1DD: run (vm.c:415)
-       n1: 362496 0x11A3FA: interpret (vm.c:458)
-        n1: 362496 0x115AE3: runFile (main.c:59)
-         n0: 362496 0x115B5D: main (main.c:73)
-    n0: 1152 in 3 places, all below massif's threshold (1.00%)
-  n2: 76320 0x116CBD: allocateObject (object.c:15)
-   n1: 75560 0x116E40: newInstance (object.c:53)
-    n1: 75560 0x11699C: nativeVector2 (natives.c:7)
-     n1: 75560 0x118F67: callValue (vm.c:158)
-      n1: 75560 0x11A1DD: run (vm.c:415)
-       n1: 75560 0x11A3FA: interpret (vm.c:458)
-        n1: 75560 0x115AE3: runFile (main.c:59)
-         n0: 75560 0x115B5D: main (main.c:73)
-   n0: 760 in 4 places, all below massif's threshold (1.00%)
-  n0: 1514 in 4 places, all below massif's threshold (1.00%)
- n0: 2098 in 4 places, all below massif's threshold (1.00%)
+heap_tree=empty
 #-----------
 snapshot=80
 #-----------
-time=4111654898
-mem_heap_B=484876
-mem_heap_extra_B=50372
+time=4615652525
+mem_heap_B=369820
+mem_heap_extra_B=31220
 mem_stacks_B=0
 heap_tree=empty
 #-----------
 snapshot=81
 #-----------
-time=4147688874
-mem_heap_B=527100
-mem_heap_extra_B=54740
+time=4657271294
+mem_heap_B=394412
+mem_heap_extra_B=33764
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=82
+#-----------
+time=4698893807
+mem_heap_B=420164
+mem_heap_extra_B=36428
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=83
+#-----------
+time=4740515468
+mem_heap_B=446844
+mem_heap_extra_B=39172
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=84
+#-----------
+time=4782136277
+mem_heap_B=474452
+mem_heap_extra_B=42028
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=85
+#-----------
+time=4823756234
+mem_heap_B=502988
+mem_heap_extra_B=44980
 mem_stacks_B=0
 heap_tree=empty

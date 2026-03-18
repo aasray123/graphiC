@@ -418,6 +418,10 @@ void collectGarbage(bool isMajor) {
 
     if(isMajor) {
         vm.nextGCTenure = vm.bytesAllocatedTenure * GC_HEAP_GROW_FACTOR;
+        #ifdef DEBUG_MINOR_GC
+        size_t next = vm.bytesAllocated * GC_HEAP_GROW_FACTOR;
+        vm.nextGC = next < 1024 * 1024 ? 1024 * 1024 : next;
+        #endif
     }
     else {
         vm.nextGC = vm.bytesAllocated * GC_HEAP_GROW_FACTOR;

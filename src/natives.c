@@ -85,6 +85,11 @@ Value nativeColor(int argCount, Value* args) {
     return C_TO_OBJ_VALUE(instance);
 }
 
+
+
+
+
+
 Color valueToColor(Value value) {
     // Default to Black (opaque) if the cast fails
     if (!IS_INSTANCE(value)) return (Color){0, 0, 0, 255}; 

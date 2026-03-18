@@ -12,7 +12,7 @@
 // #define DEBUG_STRESS_GC
 // #define DEBUG_LOG_GC
 
-// #define DEBUG_MINOR_GC
+#define DEBUG_MINOR_GC
 
 #define DEBUG_LOG_TIME
 #define UINT8_COUNT (UINT8_MAX + 1)

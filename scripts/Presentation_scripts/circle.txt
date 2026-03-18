@@ -10,8 +10,7 @@ define setup(){
 define draw(){
     BeginDrawing();
     BackgroundColor(background);
-    myVector.x = MouseX();
-    myVector.y = MouseY();
+    myVector = MousePos();
     Circle(myVector, 30, myColor);
     EndDrawing();
 }

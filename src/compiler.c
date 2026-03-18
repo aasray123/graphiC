@@ -400,7 +400,7 @@ static void parsePrecedence(Precedence precedence){
         error("Expect expression.");
         return;
     }
-
+    
     bool canAssign = precedence <= PREC_ASSIGNMENT;
     prefixRule(canAssign);
 
