@@ -446,6 +446,7 @@ static InterpretResult run() {
                 push(C_TO_OBJ_VALUE(newEntity(READ_STRING())));
                 break;
             }
+            case OP_DUP: push(peek(0)); break;
             case OP_RETURN: {
                 Value result = pop();
 
