@@ -34,7 +34,8 @@ typedef enum {
     OP_GREATER, 
     OP_LESS, 
     OP_SET_PROPERTY,
-    OP_GET_PROPERTY
+    OP_GET_PROPERTY,
+    OP_DUP
 }OpCode;
 /*
     1. Allocate a new array with more capacity.
