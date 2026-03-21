@@ -20,8 +20,12 @@ Value NativeClearBackground(int argCount, Value* args);
 Value NativeBeginDrawing(int argCount, Value* args);                
 Value NativeEndDrawing(int argCount, Value* args);                    
 Value NativeDrawCircle(int argCount, Value* args);
+Value NativeDrawRectangle(int argCount, Value* args);
 
 Value NativeMouseX(int argCount, Value* args);
 Value NativeMouseY(int argCount, Value* args);
 Value NativeGetMousePosition(int argCount, Value* args);
+Value nativeIsMouseButtonPressed(int argCount, Value* args);
+
+Value nativeIsKeyPressed(int argCount, Value* args);
 #endif

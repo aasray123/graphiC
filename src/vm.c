@@ -70,11 +70,15 @@ static void defineRaylibNatives() {
     defineNative("EndDrawing", NativeEndDrawing);
 
     defineNative("Circle", NativeDrawCircle);
+    defineNative("Rectangle", NativeDrawRectangle);
 
     defineNative("MouseX", NativeMouseX);
     defineNative("MouseY", NativeMouseY);
     defineNative("MousePos", NativeGetMousePosition);
-}
+    defineNative("MouseButtonPressed", nativeIsMouseButtonPressed);
+
+    defineNative("KeyPressed", nativeIsKeyPressed);
+}   
     
 void initVM() {
     resetStack();

@@ -158,6 +158,17 @@ Value NativeDrawCircle(int argCount, Value* args){
     return C_TO_NULL_VALUE;
 }
 
+Value NativeDrawRectangle(int argCount, Value* args){
+    if(argCount != 3) return C_TO_NULL_VALUE;
+    Vector2 position = valueToVector2(args[0]);
+    Vector2 size = valueToVector2(args[1]);
+    Color color = valueToColor(args[2]);
+
+    DrawRectangleV(position, size, color);
+    return C_TO_NULL_VALUE;
+    
+}
+
 Value NativeMouseX(int argCount, Value* args){
     if(argCount != 0 ) return C_TO_NULL_VALUE;
 
@@ -190,4 +201,81 @@ Value NativeGetMousePosition(int argCount, Value* args){
     pop();
 
     return C_TO_OBJ_VALUE(instance);
+}
+
+Value nativeIsMouseButtonPressed(int argCount, Value* args) {
+    // 1. Check if exactly one argument is passed and if it is a string
+    if (argCount != 1 || !IS_STRING(args[0])) {
+        return C_TO_BOOL_VALUE(false); 
+    }
+
+    // 2. Extract the raw C string from the graphiC Value
+    ObjString* stringObj = AS_STRING(args[0]);
+    const char* buttonStr = stringObj->chars;
+
+    int button = -1;
+
+    // 3. Map the string to the correct Raylib button constant
+    if (strcmp(buttonStr, "left") == 0) {
+        button = 0; // MOUSE_BUTTON_LEFT
+    } else if (strcmp(buttonStr, "right") == 0) {
+        button = 1; // MOUSE_BUTTON_RIGHT
+    } else if (strcmp(buttonStr, "middle") == 0) {
+        button = 2; // MOUSE_BUTTON_MIDDLE
+    } else {
+        // Return false if they pass an unsupported string like "up"
+        return C_TO_BOOL_VALUE(false);
+    }
+
+    // 4. Call Raylib with the mapped integer
+    return C_TO_BOOL_VALUE(IsMouseButtonPressed(button));
+}
+
+Value nativeIsKeyPressed(int argCount, Value* args) {
+    if (argCount != 1 || !IS_STRING(args[0])) {
+        return C_TO_BOOL_VALUE(false);
+    }
+
+    const char* keyStr = AS_STRING(args[0])->chars;
+    int key = -1;
+
+    // Map common control keys to Raylib constants
+    if (strcmp(keyStr, "space") == 0) {
+        key = 32; // KEY_SPACE
+    } else if (strcmp(keyStr, "enter") == 0) {
+        key = 257; // KEY_ENTER
+    } else if (strcmp(keyStr, "right") == 0) {
+        key = 262; // KEY_RIGHT
+    } else if (strcmp(keyStr, "left") == 0) {
+        key = 263; // KEY_LEFT
+    } else if (strcmp(keyStr, "down") == 0) {
+        key = 264; // KEY_DOWN
+    } else if (strcmp(keyStr, "up") == 0) {
+        key = 265; // KEY_UP
+    } 
+    else if (strcmp(keyStr, "+") == 0) {
+        bool shiftHeld = IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT);
+        return C_TO_BOOL_VALUE(shiftHeld && IsKeyPressed(KEY_EQUAL));
+    } 
+    // Standard key: '-'
+    else if (strcmp(keyStr, "-") == 0) {
+        return C_TO_BOOL_VALUE(IsKeyPressed(KEY_MINUS));
+    }
+    // Handle single letters (e.g., "a" or "A")
+    else if (strlen(keyStr) == 1) {
+        char c = keyStr[0];
+        if (c >= 'a' && c <= 'z') {
+            key = c - 32; // Convert lowercase to uppercase ASCII
+        } else if (c >= 'A' && c <= 'Z') {
+            key = c;      // Already uppercase ASCII
+        }
+    }
+
+    
+
+    if (key == -1) {
+        return C_TO_BOOL_VALUE(false); // Unsupported key string
+    }
+
+    return C_TO_BOOL_VALUE(IsKeyPressed(key));
 }
