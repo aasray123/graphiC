@@ -157,7 +157,7 @@ static int getInstructionLength(uint8_t instruction) {
 
         case OP_CONSTANT: case OP_GET_GLOBAL: case OP_SET_GLOBAL:
         case OP_GET_LOCAL: case OP_SET_LOCAL: case OP_GET_PROPERTY:
-        case OP_SET_PROPERTY: case OP_ENTITY: // Your custom opcode
+        case OP_SET_PROPERTY: case OP_ENTITY: case OP_DEFINE_GLOBAL: case OP_CALL: 
             return 2;
             
       
@@ -422,26 +422,24 @@ static void dot(bool canAssign) {
     if (canAssign && match(TOKEN_EQUAL)) {
         expression();
         emitBytes(OP_SET_PROPERTY, name);
+    } 
+    else if (canAssign && match(TOKEN_PLUS_EQUAL)) {
+        emitByte(OP_DUP); // Duplicate the instance
+        emitBytes(OP_GET_PROPERTY, name);
+        expression();
+        emitByte(OP_ADD);
+        emitBytes(OP_SET_PROPERTY, name);
+    }
+    else if (canAssign && match(TOKEN_MINUS_EQUAL)) {
+        emitByte(OP_DUP); // Duplicate the instance
+        emitBytes(OP_GET_PROPERTY, name);
+        expression();
+        emitByte(OP_SUBTRACT);
+        emitBytes(OP_SET_PROPERTY, name);
     }
     else {
         emitBytes(OP_GET_PROPERTY, name);
     }
-
-    //TODO: LOOK AT THE STRUCT VERSION
-
-    // if(canAssign && match(TOKEN_EQUAL)) {
-    //     expression();
-    //     emitBytes(OP_SET_PROPERTY, name);
-    // }
-    //TODO: LOOK AT THE INVOKE
-    // else if (match(TOKEN_LEFT_PAREN)) {
-    //     uint8_t argCount = argumentList();
-    //     emitBytes(OP_INVOKE, name);
-    //     emitByte(argCount);
-    // }
-    // else {
-    //     emitBytes(OP_GET_PROPERTY, name);
-    // }
 }
 
 static void call (bool canAssign) {
@@ -556,10 +554,10 @@ ParseRule rules[] = {
   [TOKEN_INCREMENT]     = {NULL,     postfix, PREC_POSTFIX},
   [TOKEN_DECREMENT]     = {NULL,     postfix, PREC_POSTFIX},
 
-  [TOKEN_PLUS_EQUAL]    = {NULL,     NULL,  PREC_ASSIGNMENT},
-  [TOKEN_MINUS_EQUAL]   = {NULL,     NULL,  PREC_ASSIGNMENT},
-  [TOKEN_SLASH_EQUAL]   = {NULL,     NULL,  PREC_ASSIGNMENT},
-  [TOKEN_STAR_EQUAL]   = {NULL,      NULL,  PREC_ASSIGNMENT},
+  [TOKEN_PLUS_EQUAL]    = {NULL,     NULL,  PREC_NONE},
+  [TOKEN_MINUS_EQUAL]   = {NULL,     NULL,  PREC_NONE},
+  [TOKEN_SLASH_EQUAL]   = {NULL,     NULL,  PREC_NONE},
+  [TOKEN_STAR_EQUAL]    = {NULL,     NULL,  PREC_NONE},
   [TOKEN_SEMICOLON]     = {NULL,     NULL,    PREC_NONE},
   [TOKEN_COMMA]         = {NULL,     NULL,    PREC_NONE},
   [TOKEN_DOT]           = {NULL,     dot,     PREC_CALL},

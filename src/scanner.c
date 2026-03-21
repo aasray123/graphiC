@@ -156,7 +156,7 @@ static TokenType identifierType() {
         case 'e': 
             if (scanner.current - scanner.start > 1){
                 switch (scanner.start[1]){
-                    case 'n': return checkKeyword(2, 2, "tity", TOKEN_ENTITY);
+                    case 'n': return checkKeyword(2, 4, "tity", TOKEN_ENTITY);
                     case 'l': return checkKeyword(2, 2, "se", TOKEN_ELSE);
                 }
             }
