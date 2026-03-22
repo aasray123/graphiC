@@ -1,0 +1,27 @@
+define setup(){
+    var width = 800;
+    InitWindow(width,width,"Hello");    
+    var background = Color(255,255,255,255);
+    
+    var myVector = Vector2(40,40);
+    var mySize = 30;
+    var shapeType;
+    var myColor = Color(255,0,0,255);
+    
+}
+
+define draw(){
+    BeginDrawing();
+    BackgroundColor(background);
+    myVector = MousePos();
+    if(KeyPressed("+")){
+        mySize += 10;
+    }
+    if(KeyPressed("-")){
+        mySize = mySize - 10;
+    }
+    Circle(myVector, mySize, myColor);
+
+
+    EndDrawing();
+}

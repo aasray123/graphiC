@@ -1,0 +1,24 @@
+define setup(){
+    var width = 800;
+    InitWindow(width,width,"Hello");    
+    var background = Color(255,255,255,255);
+    
+    var myVector = Vector2(40,40);
+    var myColor = Color(255,0,0,255);
+    
+}
+
+define draw(){
+    BeginDrawing();
+    BackgroundColor(background);
+    myVector = MousePos();
+    if(MouseX() > (width/2)){
+        myColor = Color(0,255,0,255);
+    }
+    else if(MouseX()< (width/2)){
+       myColor = Color(0,0,255,255);
+    }
+
+    Circle(myVector, 30, myColor);
+    EndDrawing();
+}

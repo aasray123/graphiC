@@ -1,0 +1,33 @@
+entity motion {}
+define setup(){
+    var width = 800;
+    InitWindow(width,width,"Hello");    
+    var background = Color(255,255,255,255);
+    
+    var myVector = Vector2(40,40);
+    var mySize = Vector2(30,30);
+
+    var acceleration = motion();
+    acceleration.x = 0.1;
+    acceleration.y = 0.2;
+    var myColor = Color(255,0,0,255);
+
+}
+
+define draw(){
+    BackgroundColor(background);
+    BeginDrawing();
+    
+    myVector.x += acceleration.x;
+    myVector.y += acceleration.y;
+    if(myVector.x >= width || myVector.x <= 0){
+        acceleration.x = acceleration.x * -1;
+    }
+    if(myVector.y >= width || myVector.y <= 0 ){
+        acceleration.y = acceleration.y * -1;
+    }
+    Rectangle(myVector,mySize, myColor);
+
+    
+    EndDrawing();
+}

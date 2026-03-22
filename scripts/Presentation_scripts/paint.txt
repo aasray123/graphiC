@@ -1,0 +1,39 @@
+define setup(){
+    var width = 800;
+    InitWindow(width,width,"Hello");    
+    var background = Color(255,255,255,255);
+    
+    var myVector = Vector2(40,40);
+    var mySize;
+    var shapeType;
+    var myColor = Color(255,0,0,255);
+    var flag = true;
+}
+
+define draw(){
+    if (flag){
+        BackgroundColor(background);
+        flag = false;
+    }
+
+    BeginDrawing();
+    
+    myVector = MousePos();
+
+    if(MouseButtonPressed("left")){
+        shapeType = "circle";
+    }
+    else if (MouseButtonPressed("right")){
+        shapeType = "Rectangle";
+    }
+
+    if(shapeType == "circle"){
+        Circle(myVector, 30, myColor);
+    }
+    else {
+        mySize = Vector2(30,30);
+        Rectangle(myVector,mySize, myColor);
+    }
+    
+    EndDrawing();
+}
