@@ -13,6 +13,7 @@
 #define IS_FUNCTION(value)      isObjType(value, OBJ_FUNCTION)
 #define IS_NATIVE(value)        isObjType(value, OBJ_NATIVE)
 #define IS_STRING(value)        isObjType(value, OBJ_STRING)
+#define IS_ARRAY(value)    isObjType(value, OBJ_ARRAY)
 
 #define AS_ENTITY(value)        ((ObjEntity*)OBJ_VALUE_TO_C(value))
 #define AS_INSTANCE(value)      ((ObjInstance*)OBJ_VALUE_TO_C(value))
@@ -21,6 +22,7 @@
 #define AS_STRING(value)        ((ObjString*)OBJ_VALUE_TO_C(value))
 //THE POINT is to have the char* for things like printf("%s", AS_CSTRING(val))
 #define AS_CSTRING(value)       (((ObjString*)OBJ_VALUE_TO_C(value))->chars)
+#define AS_ARRAY(value)    ((ObjArray*)OBJ_VALUE_TO_C(value))
 
 typedef enum {
     OBJ_ENTITY,
@@ -28,6 +30,7 @@ typedef enum {
     OBJ_FUNCTION,
     OBJ_NATIVE,
     OBJ_STRING,
+    OBJ_ARRAY,
 } ObjType;
 
 struct Obj {
@@ -72,6 +75,13 @@ struct ObjString {
 };
 
 typedef struct {
+    Obj obj;
+    int count;
+    int capacity;
+    Value* elements;
+} ObjArray;
+
+typedef struct {
     int capacity;
     int count;
     Obj** objects;
@@ -83,6 +93,8 @@ ObjFunction* newFunction();
 ObjNative* newNative(NativeFn function);
 ObjString* takeString(char* chars, int length);
 
+ObjArray* newArray();
+void arrayWrite(ObjArray* array, Value value);
 // size_t sizeOfObject(Obj* object);
 
 void printObject(Value value);

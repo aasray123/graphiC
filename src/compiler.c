@@ -503,6 +503,32 @@ static void literal(bool canAssign) {
     }
 }
 
+static void array(bool canAssign) {
+    int itemCount = 0;
+    if (!check(TOKEN_RIGHT_BRACKET)) {
+        do {
+            expression();
+            itemCount++;
+        } while (match(TOKEN_COMMA));
+    }
+    consume(TOKEN_RIGHT_BRACKET, "Expect ']' after array elements.");
+    
+    emitByte(OP_BUILD_ARRAY);
+    emitByte(itemCount);
+}
+
+static void indexOp(bool canAssign) {
+    expression();
+    consume(TOKEN_RIGHT_BRACKET, "Expect ']' after index.");
+
+    if (canAssign && match(TOKEN_EQUAL)) {
+        expression();
+        emitByte(OP_INDEX_SET);
+    } else {
+        emitByte(OP_INDEX_GET);
+    }
+}
+
 static void string() {
     emitConstant(C_TO_OBJ_VALUE(copyString(parser.previous.start + 1, 
                                             parser.previous.length - 2)));
@@ -546,6 +572,8 @@ ParseRule rules[] = {
   [TOKEN_RIGHT_PAREN]   = {NULL,     NULL,    PREC_NONE},
   [TOKEN_LEFT_BRACE]    = {NULL,     NULL,    PREC_NONE},
   [TOKEN_RIGHT_BRACE]   = {NULL,     NULL,    PREC_NONE},
+  [TOKEN_LEFT_BRACKET]  = {array, indexOp, PREC_CALL},
+  [TOKEN_RIGHT_BRACKET] = {NULL, NULL, PREC_NONE},
   [TOKEN_MINUS]         = {unary,    binary,  PREC_TERM},
   [TOKEN_PLUS]          = {NULL,     binary,  PREC_TERM},
   [TOKEN_SLASH]         = {NULL,     binary,  PREC_FACTOR},

@@ -447,6 +447,77 @@ static InterpretResult run() {
                 break;
             }
             case OP_DUP: push(peek(0)); break;
+            case OP_BUILD_ARRAY: {
+                uint8_t itemCount = READ_BYTE();
+                Value* items = vm.stackTop - itemCount;
+                
+                ObjArray* array = newArray();
+                push(C_TO_OBJ_VALUE(array)); // Protect from GC during allocation
+                
+                for (int i = 0; i < itemCount; i++) {
+                    arrayWrite(array, items[i]);
+                }
+                
+                pop(); // Remove the protected array
+                vm.stackTop -= itemCount; // Remove the original items
+                push(C_TO_OBJ_VALUE(array)); // Push the final array object
+                break;
+            }
+
+            case OP_INDEX_GET: {
+                Value index = pop();
+                Value arrayVal = pop();
+
+                if (!IS_ARRAY(arrayVal)) {
+                    runtimeError("Can only index into arrays.");
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+                if (!IS_NUMBER(index)) {
+                    runtimeError("Array index must be a number.");
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+
+                ObjArray* array = AS_ARRAY(arrayVal);
+                int i = (int)NUMBER_VALUE_TO_C(index);
+
+                if (i < 0 || i >= array->count) {
+                    runtimeError("Index out of bounds.");
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+
+                push(array->elements[i]);
+                break;
+            }
+
+            case OP_INDEX_SET: {
+                Value value = pop();
+                Value index = pop();
+                Value arrayVal = pop();
+
+                if (!IS_ARRAY(arrayVal)) {
+                    runtimeError("Can only index into arrays.");
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+                if (!IS_NUMBER(index)) {
+                    runtimeError("Array index must be a number.");
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+
+                ObjArray* array = AS_ARRAY(arrayVal);
+                int i = (int)NUMBER_VALUE_TO_C(index);
+
+                if (i < 0 || i >= array->count) {
+                    runtimeError("Index out of bounds.");
+                    return INTERPRET_RUNTIME_ERROR;
+                }
+
+                array->elements[i] = value;
+                writeBarrier((Obj*)array, value); // Ensure GC tracks this update
+
+                push(value);
+                break;
+            }
+            
             case OP_RETURN: {
                 Value result = pop();
 

@@ -108,6 +108,24 @@ ObjString* copyString(const char* chars, int length){
     return allocateString(heapChars, length, hash);
 }
 
+ObjArray* newArray() {
+    ObjArray* array = ALLOCATE_OBJ(ObjArray, OBJ_ARRAY);
+    array->count = 0;
+    array->capacity = 0;
+    array->elements = NULL;
+    return array;
+}
+
+void arrayWrite(ObjArray* array, Value value) {
+    if (array->capacity < array->count + 1) {
+        int oldCapacity = array->capacity;
+        array->capacity = GROW_CAPACITY(oldCapacity);
+        array->elements = GROW_ARRAY(Value, array->elements, oldCapacity, array->capacity);
+    }
+    array->elements[array->count] = value;
+    array->count++;
+}
+
 static void printFunction(ObjFunction* function) {
     if (function->name == NULL) {
         printf("<script>");

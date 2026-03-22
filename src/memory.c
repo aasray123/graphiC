@@ -105,6 +105,12 @@ static void freeObject(Obj* object){
             vm.freeingTenured = false;
             break;
         }
+        case OBJ_ARRAY: {
+            ObjArray* array = (ObjArray*)object;
+            FREE_ARRAY(Value, array->elements, array->capacity);
+            FREE(ObjArray, object);
+            break;
+        }
     }
 }
 
@@ -220,6 +226,13 @@ static void blackenObject(Obj* object, bool isMajor) {
             ObjFunction* function = (ObjFunction*)object;
             markObject((Obj*)function->name, isMajor);
             markArray(&function->chunk.constants, isMajor);
+            break;
+        }
+        case OBJ_ARRAY: {
+            ObjArray* array = (ObjArray*)object;
+            for (int i = 0; i < array->count; i++) {
+                markValue(array->elements[i], isMajor);
+            }
             break;
         }
         case OBJ_NATIVE:
